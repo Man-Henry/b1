@@ -14,6 +14,9 @@
 <body>
 
 <div id="app-container">
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
     <!-- Sidebar -->
     <aside class="sidebar" id="app-sidebar">
         <div class="sidebar-header">
@@ -57,7 +60,7 @@
             </div>
 
             <div class="topbar-right">
-                <button class="action-btn" onclick="soundFX.enabled = !soundFX.enabled; this.innerText = soundFX.enabled ? '🔊 Âm Thanh: Bật' : '🔇 Âm Thanh: Tắt';" title="Bật/Tắt âm thanh hiệu ứng">
+                <button class="action-btn" id="sound-toggle-btn" onclick="toggleSound()" title="Bật/Tắt âm thanh hiệu ứng">
                     🔊 Âm Thanh: Bật
                 </button>
 
@@ -73,6 +76,9 @@
         </main>
     </div>
 </div>
+
+<!-- Toast Notification Container -->
+<div id="toast-container" class="toast-container"></div>
 
 <!-- Load Database and Application Scripts -->
 <script src="data.js"></script>

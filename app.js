@@ -1,6 +1,6 @@
 /**
- * EduMaster Learning Hub - Core Application Logic
- * Interactive Quizzing, Audio Synthesis, LocalStorage & State Management
+ * EduMaster Learning Hub - Core Application Logic (v2.0 Refined)
+ * Interactive Quizzing, Audio Synthesis, LocalStorage, Two-way Sync & Modals
  */
 
 // Application State
@@ -13,6 +13,7 @@ const AppState = {
     timerInterval: null,
     timeRemaining: 0,
     startTime: null,
+    passageFontSize: 1.02,
     userStats: {
         totalAnswered: 0,
         totalCorrect: 0,
@@ -43,22 +44,26 @@ class SoundFX {
         this.init();
         if (!this.ctx) return;
         
-        const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
+        try {
+            const now = this.ctx.currentTime;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
 
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, now); // D5
-        osc.frequency.setValueAtTime(880, now + 0.1); // A5
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(587.33, now); // D5
+            osc.frequency.setValueAtTime(880, now + 0.08); // A5
 
-        gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+            gain.gain.setValueAtTime(0.12, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
 
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
 
-        osc.start(now);
-        osc.stop(now + 0.35);
+            osc.start(now);
+            osc.stop(now + 0.3);
+        } catch (e) {
+            console.warn('Audio playback error', e);
+        }
     }
 
     playIncorrect() {
@@ -66,22 +71,26 @@ class SoundFX {
         this.init();
         if (!this.ctx) return;
 
-        const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
+        try {
+            const now = this.ctx.currentTime;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
 
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(260, now);
-        osc.frequency.setValueAtTime(196, now + 0.12);
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(260, now);
+            osc.frequency.setValueAtTime(196, now + 0.1);
 
-        gain.gain.setValueAtTime(0.18, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.28);
 
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
 
-        osc.start(now);
-        osc.stop(now + 0.3);
+            osc.start(now);
+            osc.stop(now + 0.28);
+        } catch (e) {
+            console.warn('Audio playback error', e);
+        }
     }
 
     playCelebration() {
@@ -89,28 +98,47 @@ class SoundFX {
         this.init();
         if (!this.ctx) return;
 
-        const notes = [523.25, 659.25, 783.99, 1046.50]; // C E G C
-        notes.forEach((freq, idx) => {
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            const start = this.ctx.currentTime + (idx * 0.1);
+        try {
+            const notes = [523.25, 659.25, 783.99, 1046.50]; // C E G C
+            notes.forEach((freq, idx) => {
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                const start = this.ctx.currentTime + (idx * 0.09);
 
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, start);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, start);
 
-            gain.gain.setValueAtTime(0.15, start);
-            gain.gain.exponentialRampToValueAtTime(0.01, start + 0.4);
+                gain.gain.setValueAtTime(0.14, start);
+                gain.gain.exponentialRampToValueAtTime(0.01, start + 0.35);
 
-            osc.connect(gain);
-            gain.connect(this.ctx.destination);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
 
-            osc.start(start);
-            osc.stop(start + 0.4);
-        });
+                osc.start(start);
+                osc.stop(start + 0.35);
+            });
+        } catch (e) {
+            console.warn('Celebration audio error', e);
+        }
     }
 }
 
 const soundFX = new SoundFX();
+
+// Toast Notifications
+function showToast(message, icon = '💡') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = 'toast-message';
+    toast.innerHTML = `<span style="font-size: 1.15rem;">${icon}</span> <span>${message}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
 
 // ==========================================================================
 // Initialization & Storage
@@ -119,6 +147,7 @@ const soundFX = new SoundFX();
 document.addEventListener('DOMContentLoaded', () => {
     loadUserStats();
     initTheme();
+    initSound();
     renderNavigation();
     renderDashboard();
     setupEventListeners();
@@ -152,6 +181,27 @@ function updateTopBarStats() {
     if (scoreEl) scoreEl.innerText = `${AppState.userStats.scorePoints || 0} XP`;
 }
 
+// Sound Preference
+function initSound() {
+    const saved = localStorage.getItem('edumaster_sound');
+    soundFX.enabled = saved !== null ? saved === 'true' : true;
+    updateSoundButtonUI();
+}
+
+function toggleSound() {
+    soundFX.enabled = !soundFX.enabled;
+    localStorage.setItem('edumaster_sound', soundFX.enabled);
+    updateSoundButtonUI();
+    showToast(soundFX.enabled ? 'Đã bật âm thanh hiệu ứng 🔊' : 'Đã tắt âm thanh hiệu ứng 🔇', soundFX.enabled ? '🔊' : '🔇');
+}
+
+function updateSoundButtonUI() {
+    const btn = document.getElementById('sound-toggle-btn');
+    if (btn) {
+        btn.innerText = soundFX.enabled ? '🔊 Âm Thanh: Bật' : '🔇 Âm Thanh: Tắt';
+    }
+}
+
 // Theme Toggle
 function initTheme() {
     const currentTheme = localStorage.getItem('edumaster_theme') || 'light';
@@ -171,6 +221,7 @@ function toggleTheme() {
     if (themeIcon) {
         themeIcon.innerText = next === 'dark' ? '☀️' : '🌙';
     }
+    showToast(next === 'dark' ? 'Đã chuyển sang Giao diện Tối 🌙' : 'Đã chuyển sang Giao diện Sáng ☀️', next === 'dark' ? '🌙' : '☀️');
 }
 
 // ==========================================================================
@@ -251,8 +302,13 @@ function navigateTo(viewName) {
     }
     
     // Close mobile sidebar if open
-    document.getElementById('app-sidebar')?.classList.remove('open');
+    closeMobileSidebar();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closeMobileSidebar() {
+    document.getElementById('app-sidebar')?.classList.remove('open');
+    document.getElementById('sidebar-backdrop')?.classList.remove('show');
 }
 
 // ==========================================================================
@@ -337,24 +393,24 @@ function renderDashboard() {
             ${COURSE_DATA.modules.map(mod => renderModuleCard(mod)).join('')}
         </div>
 
-        <div class="section-header" style="margin-top: 20px;">
+        <div class="section-header" style="margin-top: 24px;">
             <h2>💡 Bí Quyết Học Hiệu Quả</h2>
         </div>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-            <div style="background: var(--bg-card); padding: 22px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <div style="background: var(--bg-card); padding: 22px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
                 <div style="font-size: 1.5rem; margin-bottom: 8px;">🎧</div>
                 <h3 style="font-size: 1.05rem; margin-bottom: 6px; color: var(--text-primary);">Chế Độ Luyện Tập Thông Minh</h3>
-                <p style="font-size: 0.88rem; color: var(--text-secondary);">Nhấp chọn đáp án để nhận ngay phản hồi âm thanh và lời giải thích ngữ pháp chi tiết. Thích hợp để củng cố kiến thức mỗi ngày.</p>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55;">Nhấp chọn đáp án để nhận ngay phản hồi âm thanh và lời giải thích ngữ pháp chi tiết. Thích hợp để củng cố kiến thức mỗi ngày.</p>
             </div>
-            <div style="background: var(--bg-card); padding: 22px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <div style="background: var(--bg-card); padding: 22px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
                 <div style="font-size: 1.5rem; margin-bottom: 8px;">⏱️</div>
                 <h3 style="font-size: 1.05rem; margin-bottom: 6px; color: var(--text-primary);">Chế Độ Thi Thử Tính Giờ</h3>
-                <p style="font-size: 0.88rem; color: var(--text-secondary);">Thử sức với áp lực thời gian thực, ẩn lời giải cho đến khi bấm nộp bài để đánh giá chính xác năng lực bản thân.</p>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55;">Thử sức với áp lực thời gian thực, ẩn lời giải cho đến khi bấm nộp bài để đánh giá chính xác năng lực bản thân.</p>
             </div>
-            <div style="background: var(--bg-card); padding: 22px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <div style="background: var(--bg-card); padding: 22px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
                 <div style="font-size: 1.5rem; margin-bottom: 8px;">🎓</div>
                 <h3 style="font-size: 1.05rem; margin-bottom: 6px; color: var(--text-primary);">Cấp Chứng Nhận Danh Dự</h3>
-                <p style="font-size: 0.88rem; color: var(--text-secondary);">Đạt từ 80% trở lên ở các bài thi để nhận chứng chỉ hoàn thành học phần với thiết kế sang trọng để lưu niệm.</p>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55;">Đạt từ 80% trở lên ở các bài thi để nhận chứng chỉ hoàn thành học phần với thiết kế sang trọng để in hoặc lưu PDF.</p>
             </div>
         </div>
     `;
@@ -413,6 +469,7 @@ function setQuizMode(mode) {
     AppState.examMode = mode;
     AppState.answers = {};
     AppState.submitted = false;
+    showToast(mode === 'practice' ? 'Đã bật Chế độ Luyện Tập (Hiện giải thích ngay)' : 'Đã bật Chế độ Thi Thử (Tính giờ kiểm tra)', '⚙️');
     renderQuizView();
 }
 
@@ -510,8 +567,14 @@ function renderPassageColumn(mod) {
         return `
             <div class="passage-card">
                 <div class="passage-header">
-                    <h3 class="passage-title">📖 ${mod.passageTitle}</h3>
-                    <div class="passage-meta">Vườn Quốc Gia Wollemi, Úc • Bấm vào [ ... ] để nhảy đến câu hỏi</div>
+                    <div>
+                        <h3 class="passage-title">📖 ${mod.passageTitle}</h3>
+                        <div class="passage-meta">Vườn Quốc Gia Wollemi, Úc • Bấm vào [ ... ] để chọn từ</div>
+                    </div>
+                    <div class="passage-tools">
+                        <button class="font-size-btn" onclick="adjustPassageFontSize(-0.05)" title="Giảm cỡ chữ">A-</button>
+                        <button class="font-size-btn" onclick="adjustPassageFontSize(0.05)" title="Tăng cỡ chữ">A+</button>
+                    </div>
                 </div>
                 <div class="passage-content">
                     ${mod.passage.replace(/\n\n/g, '<br><br>')}
@@ -521,12 +584,24 @@ function renderPassageColumn(mod) {
     } else if (mod.id === 'reading-comp') {
         return `
             <div class="passage-card" id="reading-passages-container">
+                <div class="passage-header">
+                    <div>
+                        <h3 class="passage-title">📖 Đọc Hiểu Chuyên Sâu</h3>
+                        <div class="passage-meta">Bấm tab dưới để nhảy nhanh đến bài đọc tương ứng</div>
+                    </div>
+                    <div class="passage-tools">
+                        <button class="font-size-btn" onclick="adjustPassageFontSize(-0.05)" title="Giảm cỡ chữ">A-</button>
+                        <button class="font-size-btn" onclick="adjustPassageFontSize(0.05)" title="Tăng cỡ chữ">A+</button>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap;">
+                    <button class="action-btn" style="padding: 4px 10px; font-size: 0.8rem;" onclick="jumpToReadingText('passage-sub-text-16')">📄 Text 16: Madonna</button>
+                    <button class="action-btn" style="padding: 4px 10px; font-size: 0.8rem;" onclick="jumpToReadingText('passage-sub-text-17')">🎸 Text 17: Paul Staples</button>
+                </div>
                 ${mod.subSections.map(sub => `
-                    <div style="margin-bottom: 36px; padding-bottom: 24px; border-bottom: 2px dashed var(--border-color);">
-                        <div class="passage-header">
-                            <h3 class="passage-title">${sub.title}</h3>
-                            <div class="passage-meta">${sub.author}</div>
-                        </div>
+                    <div id="passage-sub-${sub.id}" style="margin-bottom: 36px; padding-bottom: 24px; border-bottom: 2px dashed var(--border-color); transition: background-color 0.4s ease; border-radius: 8px; padding: 12px 6px;">
+                        <h4 style="font-size: 1.15rem; color: var(--primary); font-weight: 800; margin-bottom: 4px;">${sub.title}</h4>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); font-style: italic; margin-bottom: 12px;">${sub.author}</div>
                         <div class="passage-content">
                             ${sub.passage}
                         </div>
@@ -538,13 +613,31 @@ function renderPassageColumn(mod) {
     return '';
 }
 
+function adjustPassageFontSize(delta) {
+    AppState.passageFontSize = Math.min(1.35, Math.max(0.85, AppState.passageFontSize + delta));
+    const passage = document.querySelector('.passage-card');
+    if (passage) {
+        passage.style.fontSize = `${AppState.passageFontSize}rem`;
+    }
+    showToast(`Cỡ chữ bài đọc: ${Math.round(AppState.passageFontSize * 100)}%`, '🔍');
+}
+
+function jumpToReadingText(elementId) {
+    const el = document.getElementById(elementId);
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        el.style.backgroundColor = 'var(--primary-light)';
+        setTimeout(() => el.style.backgroundColor = 'transparent', 1200);
+    }
+}
+
 function renderQuestionsList(mod, questions) {
     let html = '';
 
     if (mod.subSections) {
         // Grouped by section
         mod.subSections.forEach(sub => {
-            html += `<h3 style="font-size: 1.15rem; color: var(--primary); margin: 16px 0 8px; border-left: 4px solid var(--primary); padding-left: 10px;">${sub.title}</h3>`;
+            html += `<h3 style="font-size: 1.15rem; color: var(--primary); margin: 20px 0 10px; border-left: 4px solid var(--primary); padding-left: 10px; font-weight: 800;">${sub.title}</h3>`;
             sub.questions.forEach(q => {
                 html += renderSingleQuestion(q);
             });
@@ -562,10 +655,10 @@ function renderSingleQuestion(q) {
     const isBookmarked = AppState.userStats.bookmarkedQuestions.includes(String(q.id));
 
     return `
-        <div class="question-card" id="question-${q.id}">
+        <div class="question-card" id="question-${q.id}" onclick="handleQuestionCardClick('${q.id}')">
             <div class="question-meta-bar">
                 <span class="question-badge">Câu ${q.id} ${q.category ? '• ' + q.category : ''}</span>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" onclick="toggleBookmark('${q.id}')" title="Lưu câu hỏi">
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" onclick="event.stopPropagation(); toggleBookmark('${q.id}')" title="Lưu câu hỏi">
                     ★
                 </button>
             </div>
@@ -583,9 +676,10 @@ function renderSingleQuestion(q) {
 
             <div class="options-stack" id="options-for-${q.id}">
                 ${q.options.map((opt, optIndex) => `
-                    <div class="option-item" id="opt-${q.id}-${optIndex}" onclick="handleOptionSelect('${q.id}', ${optIndex})">
+                    <div class="option-item" id="opt-${q.id}-${optIndex}" onclick="event.stopPropagation(); handleOptionSelect('${q.id}', ${optIndex})">
                         <div class="option-letter">${String.fromCharCode(65 + optIndex)}</div>
                         <div class="option-text">${opt}</div>
+                        <span class="option-status-icon" id="status-icon-${q.id}-${optIndex}"></span>
                     </div>
                 `).join('')}
             </div>
@@ -595,6 +689,19 @@ function renderSingleQuestion(q) {
             </div>
         </div>
     `;
+}
+
+function handleQuestionCardClick(qId) {
+    const q = findQuestionById(qId);
+    if (q && q.blankNum) {
+        // Highlight corresponding blank in passage
+        document.querySelectorAll('.cloze-blank').forEach(b => b.classList.remove('active'));
+        const activeBlank = document.querySelector(`.cloze-blank[data-blank="${q.blankNum}"]`);
+        if (activeBlank) {
+            activeBlank.classList.add('active');
+            activeBlank.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
 }
 
 // Option selection handler
@@ -651,15 +758,27 @@ function revealQuestionFeedback(questionId, selectedIndex) {
 
     if (isCorrect) {
         soundFX.playCorrect();
-        if (targetOpt) targetOpt.classList.add('correct');
+        if (targetOpt) {
+            targetOpt.classList.add('correct');
+            const icon = targetOpt.querySelector('.option-status-icon');
+            if (icon) icon.innerText = '✓';
+        }
         if (dot) {
             dot.classList.add('correct');
             dot.classList.remove('incorrect');
         }
     } else {
         soundFX.playIncorrect();
-        if (targetOpt) targetOpt.classList.add('incorrect');
-        if (correctOpt) correctOpt.classList.add('correct');
+        if (targetOpt) {
+            targetOpt.classList.add('incorrect');
+            const icon = targetOpt.querySelector('.option-status-icon');
+            if (icon) icon.innerText = '✕';
+        }
+        if (correctOpt) {
+            correctOpt.classList.add('correct');
+            const icon = correctOpt.querySelector('.option-status-icon');
+            if (icon) icon.innerText = '✓';
+        }
         if (dot) {
             dot.classList.add('incorrect');
             dot.classList.remove('correct');
@@ -753,7 +872,6 @@ function updateTimerDisplay() {
 
 // Full Exam Simulation
 function openExamSimulation() {
-    // Generate a comprehensive test: pick 5 from grammar, 5 from signs, 5 from cloze, 5 from reading
     const examQuestions = [];
 
     const modGrammar = COURSE_DATA.modules.find(m => m.id === 'grammar-vocab');
@@ -765,7 +883,6 @@ function openExamSimulation() {
     const modCloze = COURSE_DATA.modules.find(m => m.id === 'cloze-test');
     if (modCloze) examQuestions.push(...modCloze.questions.slice(0, 5));
 
-    // Custom Mock Module
     const mockExam = {
         id: 'full-mock-exam',
         title: 'BÀI THI THỬ TỔNG HỢP (MOCK EXAM 2026)',
@@ -776,14 +893,12 @@ function openExamSimulation() {
         questions: examQuestions
     };
 
-    // Temporarily register or render mock
     AppState.currentView = 'module';
     AppState.currentModuleId = 'full-mock-exam';
     AppState.examMode = 'exam';
     AppState.answers = {};
     AppState.submitted = false;
 
-    // Insert to modules list if not exists
     if (!COURSE_DATA.modules.find(m => m.id === 'full-mock-exam')) {
         COURSE_DATA.modules.push(mockExam);
     }
@@ -822,9 +937,15 @@ function submitQuiz() {
         const expBox = document.getElementById(`explanation-${q.id}`);
         const dot = document.getElementById(`nav-dot-${q.id}`);
 
-        if (correctOpt) correctOpt.classList.add('correct');
+        if (correctOpt) {
+            correctOpt.classList.add('correct');
+            const icon = correctOpt.querySelector('.option-status-icon');
+            if (icon) icon.innerText = '✓';
+        }
         if (userAns !== undefined && !isCorrect && targetOpt) {
             targetOpt.classList.add('incorrect');
+            const icon = targetOpt.querySelector('.option-status-icon');
+            if (icon) icon.innerText = '✕';
         }
 
         if (dot) {
@@ -889,7 +1010,7 @@ function showResultModal(score, total, percent, title, firstQId) {
     }
 
     const modalHtml = `
-        <div class="modal-backdrop show" id="result-modal">
+        <div class="modal-backdrop show" id="result-modal" onclick="if (event.target === this) closeModal('result-modal')">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title">Kết Quả Bài Làm</h3>
@@ -942,6 +1063,7 @@ function showResultModal(score, total, percent, title, firstQId) {
 function resetCurrentQuiz() {
     AppState.answers = {};
     AppState.submitted = false;
+    showToast('Đã làm mới bài thi 🔄');
     renderQuizView();
 }
 
@@ -959,8 +1081,8 @@ function generateCertificate(courseTitle, scorePercent) {
     const today = new Date().toLocaleDateString('vi-VN');
 
     const certHtml = `
-        <div class="modal-backdrop show" id="cert-modal">
-            <div class="modal-content" style="max-width: 700px;">
+        <div class="modal-backdrop show" id="cert-modal" onclick="if (event.target === this) closeModal('cert-modal')">
+            <div class="modal-content" style="max-width: 680px;">
                 <div class="modal-header">
                     <h3 class="modal-title">🏆 Chứng Nhận Hoàn Thành Khóa Học</h3>
                     <button class="modal-close-btn" onclick="closeModal('cert-modal')">✕</button>
@@ -1001,20 +1123,22 @@ function generateCertificate(courseTitle, scorePercent) {
 
 function toggleBookmark(questionId) {
     const index = AppState.userStats.bookmarkedQuestions.indexOf(String(questionId));
+    let isAdded = false;
     if (index === -1) {
         AppState.userStats.bookmarkedQuestions.push(String(questionId));
+        isAdded = true;
     } else {
         AppState.userStats.bookmarkedQuestions.splice(index, 1);
     }
     saveUserStats();
 
-    // Toggle button UI
-    const btns = document.querySelectorAll(`.bookmark-btn`);
     const targetQCard = document.getElementById(`question-${questionId}`);
     if (targetQCard) {
         const btn = targetQCard.querySelector('.bookmark-btn');
         if (btn) btn.classList.toggle('active');
     }
+
+    showToast(isAdded ? `Đã lưu Câu ${questionId} vào sổ tay yêu thích ⭐` : `Đã bỏ lưu Câu ${questionId}`, '⭐');
 }
 
 function openMistakeReview() {
@@ -1074,12 +1198,12 @@ function renderFlashcardUI() {
 
     content.innerHTML = `
         <div style="max-width: 800px; margin: 0 auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 10px;">
                 <div>
-                    <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary);">💡 Sổ Tay Từ Vựng & Cấu Trúc Trọng Điểm</h2>
+                    <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.3px;">💡 Sổ Tay Từ Vựng & Cấu Trúc Trọng Điểm</h2>
                     <p style="font-size: 0.9rem; color: var(--text-muted);">Lật thẻ để ghi nhớ các cụm từ (Collocations) và mẫu câu hay gặp trong đề thi.</p>
                 </div>
-                <div style="font-weight: 700; color: var(--primary);">
+                <div style="font-weight: 800; color: var(--primary); background: var(--primary-light); padding: 4px 12px; border-radius: 9999px;">
                     ${AppState.currentFlashcardIndex + 1} / ${cards.length}
                 </div>
             </div>
@@ -1087,12 +1211,12 @@ function renderFlashcardUI() {
             <div class="flashcard-container" onclick="flipCard(this)">
                 <div class="flashcard" id="active-flashcard">
                     <div class="card-face front">
-                        <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 8px;">Cấu trúc / Thành ngữ</span>
+                        <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 8px; font-weight: 700;">Cấu trúc / Thành ngữ</span>
                         <h3>${card.front}</h3>
                         <div class="card-hint">👆 Chạm hoặc Nhấp chuột để lật xem nghĩa & ví dụ</div>
                     </div>
                     <div class="card-face back">
-                        <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--primary); letter-spacing: 1px; margin-bottom: 8px;">Ý nghĩa & Cách dùng</span>
+                        <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--primary); letter-spacing: 1px; margin-bottom: 8px; font-weight: 700;">Ý nghĩa & Cách dùng</span>
                         <h4>${card.back}</h4>
                         <div class="card-example">
                             <b>Ví dụ:</b> "${card.example}"
@@ -1113,13 +1237,13 @@ function renderFlashcardUI() {
                 </button>
             </div>
 
-            <div style="margin-top: 48px; background: var(--bg-card); border-radius: var(--radius-md); padding: 24px; border: 1px solid var(--border-color);">
-                <h3 style="font-size: 1.15rem; margin-bottom: 16px; color: var(--text-primary);">📋 Bảng Tra Cứu Toàn Bộ Cấu Trúc</h3>
+            <div style="margin-top: 48px; background: var(--bg-card); border-radius: var(--radius-lg); padding: 26px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+                <h3 style="font-size: 1.15rem; margin-bottom: 16px; color: var(--text-primary); font-weight: 800;">📋 Bảng Tra Cứu Toàn Bộ Cấu Trúc</h3>
                 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px;">
                     ${cards.map((c, i) => `
-                        <div style="padding: 12px; background: var(--bg-card-subtle); border-radius: 8px; cursor: pointer; transition: all 0.2s;" onclick="jumpToFlashcard(${i})">
-                            <div style="font-weight: 700; color: var(--primary); font-size: 0.95rem;">${c.front}</div>
-                            <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">${c.back}</div>
+                        <div style="padding: 14px; background: var(--bg-card-subtle); border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s; border: 1px solid var(--border-color);" onclick="jumpToFlashcard(${i})">
+                            <div style="font-weight: 800; color: var(--primary); font-size: 0.95rem;">${c.front}</div>
+                            <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;">${c.back}</div>
                         </div>
                     `).join('')}
                 </div>
@@ -1164,9 +1288,17 @@ function setupEventListeners() {
     // Menu toggle for mobile
     const toggleBtn = document.getElementById('mobile-menu-toggle');
     const sidebar = document.getElementById('app-sidebar');
-    if (toggleBtn && sidebar) {
+    const backdrop = document.getElementById('sidebar-backdrop');
+
+    if (toggleBtn && sidebar && backdrop) {
         toggleBtn.addEventListener('click', () => {
             sidebar.classList.toggle('open');
+            backdrop.classList.toggle('show');
+        });
+
+        backdrop.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            backdrop.classList.remove('show');
         });
     }
 
