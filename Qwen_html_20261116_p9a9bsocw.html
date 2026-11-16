@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Test: Cave Discovery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .reading-text {
+            background: #f0f4f8;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 6px solid #1e3c72;
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 80px;
+            border-bottom: 2px solid #1e3c72;
+            text-align: center;
+            font-weight: bold;
+            color: #1e3c72;
+            margin: 0 5px;
+            padding: 0 5px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .question-block:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .q-header {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #1e3c72;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option:hover {
+            border-color: #1e3c72;
+            background: #e8f0fe;
+        }
+
+        .option.selected {
+            border-color: #1e3c72;
+            background: #1e3c72;
+            color: white;
+        }
+
+        .option.correct {
+            border-color: #27ae60;
+            background: #27ae60;
+            color: white;
+        }
+
+        .option.incorrect {
+            border-color: #e74c3c;
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+        }
+
+        .btn-check {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }
+
+        .btn-check:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30,60,114,0.4);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(231,76,60,0.4);
+        }
+
+        .result-box {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 12px;
+            font-size: 1.2em;
+            display: none;
+        }
+
+        .result-box.show {
+            display: block;
+        }
+
+        .explanation {
+            margin-top: 10px;
+            padding: 10px;
+            background: #fff3cd;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #856404;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📖 Cloze Test: Cave Discovery</h1>
+        <p class="subtitle">Đọc đoạn văn và chọn đáp án đúng cho các chỗ trống (1-10)</p>
+
+        <div class="reading-text">
+            A cave containing over 200 paintings was discovered in the Wollemi National Park, Australia, eight years ago. Some of the paintings are <span class="blank">(1) ___</span> least 3,000 years old. <span class="blank">(2) ___</span> is even more surprising is that the cave was found by chance by someone walking in the area. However, the site of the cave was so difficult to reach that it <span class="blank">(3) ___</span> a long time before researchers could visit it.
+            <br><br>
+            The exact location of the site has to be <span class="blank">(4) ___</span> secret. This is to <span class="blank">(5) ___</span> the cave from being visited by sightseers who do not <span class="blank">(6) ___</span> how easy it is to <span class="blank">(7) ___</span> the paintings.
+            <br><br>
+            The paintings show people and animals, <span class="blank">(8) ___</span> birds, lizards and other Australian animals that can <span class="blank">(9) ___</span> be seen today. According to researchers, <span class="blank">(10) ___</span> its recent discovery, nobody had visited the cave for around 200 years.
+        </div>
+
+        <div id="quiz-container"></div>
+
+        <div class="btn-group">
+            <button class="btn btn-check" onclick="checkAnswers()">✅ Kiểm Tra Đáp Án</button>
+            <button class="btn btn-reset" onclick="resetQuiz()">🔄 Làm Lại</button>
+        </div>
+
+        <div id="result" class="result-box"></div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                id: 1,
+                text: "Some of the paintings are (1) ___ least 3,000 years old.",
+                options: ["in", "of", "to", "at"],
+                correct: 3, // D. at
+                explanation: "Cụm từ 'at least' nghĩa là 'ít nhất'."
+            },
+            {
+                id: 2,
+                text: "(2) ___ is even more surprising is that the cave was found by chance...",
+                options: ["How", "What", "Why", "Which"],
+                correct: 1, // B. What
+                explanation: "'What' đóng vai trò chủ ngữ cho mệnh đề danh ngữ (What is even more surprising...)."
+            },
+            {
+                id: 3,
+                text: "...it (3) ___ a long time before researchers could visit it.",
+                options: ["lasted", "spent", "took", "finished"],
+                correct: 2, // C. took
+                explanation: "Cấu trúc 'It takes/took + time + to do sth' hoặc 'It took + time + before...' (Mất bao lâu để...)."
+            },
+            {
+                id: 4,
+                text: "The exact location of the site has to be (4) ___ secret.",
+                options: ["remained", "set", "controlled", "kept"],
+                correct: 3, // D. kept
+                explanation: "Cụm từ 'keep secret' (giữ bí mật). Dạng bị động: 'be kept secret'."
+            },
+            {
+                id: 5,
+                text: "This is to (5) ___ the cave from being visited by sightseers...",
+                options: ["prevent", "miss", "escape", "avoid"],
+                correct: 0, // A. prevent
+                explanation: "Cấu trúc 'prevent sth/sb from doing sth' (ngăn cản cái gì/khỏi làm gì)."
+            },
+            {
+                id: 6,
+                text: "...sightseers who do not (6) ___ how easy it is...",
+                options: ["catch", "realise", "dream", "feel"],
+                correct: 1, // B. realise
+                explanation: "'Realise' nghĩa là nhận ra, nhận thức được."
+            },
+            {
+                id: 7,
+                text: "...how easy it is to (7) ___ the paintings.",
+                options: ["waste", "injure", "damage", "upset"],
+                correct: 2, // C. damage
+                explanation: "'Damage' dùng cho vật thể (làm hư hại bức tranh). 'Injure' dùng cho người."
+            },
+            {
+                id: 8,
+                text: "The paintings show people and animals, (8) ___ birds, lizards...",
+                options: ["involving", "adding", "including", "consisting"],
+                correct: 2, // C. including
+                explanation: "'Including' nghĩa là 'bao gồm' (liệt kê thêm)."
+            },
+            {
+                id: 9,
+                text: "...animals that can (9) ___ be seen today.",
+                options: ["yet", "already", "ever", "still"],
+                correct: 3, // D. still
+                explanation: "'Still' nghĩa là 'vẫn còn' (vẫn có thể thấy ngày nay)."
+            },
+            {
+                id: 10,
+                text: "According to researchers, (10) ___ its recent discovery, nobody had visited...",
+                options: ["by", "after", "until", "on"],
+                correct: 2, // C. until
+                explanation: "'Until' nghĩa là 'cho đến khi'. Cho đến khi được phát hiện gần đây, chưa ai đến thăm."
+            }
+        ];
+
+        let userAnswers = {};
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            quizData.forEach((q, index) => {
+                const block = document.createElement('div');
+                block.className = 'question-block';
+                block.innerHTML = `
+                    <div class="q-header">Câu ${q.id}: ${q.text}</div>
+                    <div class="options-grid">
+                        ${q.options.map((opt, i) => `
+                            <div class="option" onclick="selectOption(${q.id}, ${i}, this)">
+                                <strong>${String.fromCharCode(65 + i)}.</strong> ${opt}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="explanation" id="exp-${q.id}">💡 ${q.explanation}</div>
+                `;
+                container.appendChild(block);
+            });
+        }
+
+        function selectOption(qId, optIndex, element) {
+            userAnswers[qId] = optIndex;
+            const parent = element.parentElement;
+            const options = parent.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            
+            quizData.forEach(q => {
+                const block = document.querySelectorAll('.question-block')[quizData.indexOf(q)];
+                const options = block.querySelectorAll('.option');
+                const exp = document.getElementById(`exp-${q.id}`);
+
+                options.forEach((opt, i) => {
+                    opt.style.pointerEvents = 'none';
+                    if (i === q.correct) {
+                        opt.classList.add('correct');
+                    } else if (userAnswers[q.id] === i) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+
+                if (userAnswers[q.id] === q.correct) score++;
+                exp.classList.add('show');
+            });
+
+            const resultDiv = document.getElementById('result');
+            const percent = Math.round((score / quizData.length) * 100);
+            let msg = '';
+            let colorClass = '';
+
+            if (percent >= 80) {
+                msg = `🌟 Tuyệt vời! ${score}/${quizData.length} (${percent}%)`;
+                colorClass = 'background: #27ae60; color: white;';
+            } else if (percent >= 50) {
+                msg = `👍 Khá tốt! ${score}/${quizData.length} (${percent}%)`;
+                colorClass = 'background: #f39c12; color: white;';
+            } else {
+                msg = `💪 Cố gắng lên! ${score}/${quizData.length} (${percent}%)`;
+                colorClass = 'background: #e74c3c; color: white;';
+            }
+
+            resultDiv.style.cssText = colorClass;
+            resultDiv.innerHTML = msg;
+            resultDiv.classList.add('show');
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            userAnswers = {};
+            document.getElementById('result').classList.remove('show');
+            renderQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        renderQuiz();
+    </script>
+</body>
+</html>

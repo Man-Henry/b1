@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduMaster - Cổng Luyện Thi & Học Tiếng Anh Trực Tuyến</title>
+    <meta name="description" content="Nền tảng học và luyện thi Tiếng Anh toàn diện: Ngữ pháp, Đọc biển báo, Cloze Test và Đọc hiểu chuyên sâu.">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Georgia:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="app-sidebar">
+        <div class="sidebar-header">
+            <div class="logo-badge">E</div>
+            <div class="brand-text">
+                <h2>EduMaster</h2>
+                <span>English Learning Hub</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav" id="sidebar-nav-list">
+            <!-- Rendered dynamically by app.js -->
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-quick-stats">
+                <div class="quick-stat-item streak" title="Chuỗi ngày học liên tục">
+                    <span>🔥</span>
+                    <span id="user-streak">3 Ngày</span>
+                </div>
+                <div class="quick-stat-item score" title="Điểm kinh nghiệm tích lũy">
+                    <span>⭐</span>
+                    <span id="user-score">120 XP</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+        <!-- Top App Bar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle-btn" id="mobile-menu-toggle" aria-label="Toggle menu">
+                    ☰
+                </button>
+                <div class="page-title">
+                    <h1>Cổng Luyện Thi & Học Tập Tiếng Anh</h1>
+                    <p>Khóa học tích hợp 4 chuyên đề chuẩn khảo thí</p>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <button class="action-btn" onclick="soundFX.enabled = !soundFX.enabled; this.innerText = soundFX.enabled ? '🔊 Âm Thanh: Bật' : '🔇 Âm Thanh: Tắt';" title="Bật/Tắt âm thanh hiệu ứng">
+                    🔊 Âm Thanh: Bật
+                </button>
+
+                <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Đổi giao diện Sáng / Tối">
+                    <span id="theme-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Canvas -->
+        <main class="content-area" id="main-content">
+            <!-- Content will be injected by app.js -->
+        </main>
+    </div>
+</div>
+
+<!-- Load Database and Application Scripts -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
+

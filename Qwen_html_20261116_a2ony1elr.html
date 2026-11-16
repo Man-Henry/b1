@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Tiếng Anh - Câu 101-120</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f0ff;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .option.correct {
+            border-color: #4caf50;
+            background: #4caf50;
+            color: white;
+        }
+
+        .option.incorrect {
+            border-color: #f44336;
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .result {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            font-size: 1.3em;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result.good {
+            background: #4caf50;
+            color: white;
+        }
+
+        .result.bad {
+            background: #f44336;
+            color: white;
+        }
+
+        .explanation {
+            margin-top: 10px;
+            padding: 10px;
+            background: #fff3cd;
+            border-radius: 5px;
+            font-size: 0.9em;
+            color: #856404;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Bài Tập Tiếng Anh</h1>
+        <p class="subtitle">Câu 101 - 120 | Chọn đáp án đúng</p>
+
+        <div id="quiz"></div>
+
+        <button class="btn-submit" onclick="checkAnswers()">Kiểm Tra Đáp Án</button>
+        <button class="btn-submit" onclick="resetQuiz()" style="background: #999; margin-top: 10px;">Làm Lại</button>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 101,
+                text: "Andrew managed _____ a promotion.",
+                options: ["in getting", "to get", "getting", "get"],
+                correct: 1,
+                explanation: "manage + to V (quản lý/thành công làm gì)"
+            },
+            {
+                id: 102,
+                text: "I'd rather _____ with my cousin for the weekend.",
+                options: ["stay", "to stay", "staying", "to staying"],
+                correct: 0,
+                explanation: "would rather + V nguyên thể (thà rằng)"
+            },
+            {
+                id: 103,
+                text: "They suggested _____ the children to the new aquarium.",
+                options: ["to take", "in taking", "taking", "to taking"],
+                correct: 2,
+                explanation: "suggest + V-ing (đề nghị làm gì)"
+            },
+            {
+                id: 104,
+                text: "Don't forget _____ off the computer when you finish.",
+                options: ["turning", "to turning", "turn", "to turn"],
+                correct: 3,
+                explanation: "forget + to V (quên phải làm gì – chưa làm)"
+            },
+            {
+                id: 105,
+                text: "I'm sorry, but I don't really feel like _____ them tonight.",
+                options: ["seeing", "to see", "see", "to seeing"],
+                correct: 0,
+                explanation: "feel like + V-ing (thấy thích làm gì)"
+            },
+            {
+                id: 106,
+                text: "Charles _____ his car washed for two months.",
+                options: ["hadn't been", "hasn't had", "hasn't", "hadn't been having"],
+                correct: 1,
+                explanation: "have sth done (causative) + present perfect"
+            },
+            {
+                id: 107,
+                text: "Could I _____ by fax, please?",
+                options: ["have been sent", "have sent it", "had it sent", "have it sent"],
+                correct: 3,
+                explanation: "have + O + V3/ed (causative – nhờ ai làm gì)"
+            },
+            {
+                id: 108,
+                text: "You _____ checked the report twice.",
+                options: ["should have been", "could", "should have", "could have been"],
+                correct: 2,
+                explanation: "should have + V3 (lẽ ra nên làm – nhưng chưa làm)"
+            },
+            {
+                id: 109,
+                text: "They _____ come back from the shopping centre by now.",
+                options: ["must have", "must have to", "might be", "may have been"],
+                correct: 0,
+                explanation: "must have + V3 (chắc hẳn đã – suy luận mạnh)"
+            },
+            {
+                id: 110,
+                text: "I'm not sure, but I think he _____ used your coffee mug.",
+                options: ["can have been", "might have to", "can be", "may have"],
+                correct: 3,
+                explanation: "may have + V3 (có lẽ đã – suy luận không chắc)"
+            },
+            {
+                id: 111,
+                text: "I was cooking and talking on the phone _____.",
+                options: ["at once", "at random", "at a glance", "at the same time"],
+                correct: 3,
+                explanation: "at the same time = cùng một lúc"
+            },
+            {
+                id: 112,
+                text: "They're having a lesson _____.",
+                options: ["at random", "at a glance", "at the moment", "at once"],
+                correct: 2,
+                explanation: "at the moment = ngay lúc này"
+            },
+            {
+                id: 113,
+                text: "_____ of six, he wanted to become an astronaut.",
+                options: ["At a glance", "At the age", "At the moment", "At the same time"],
+                correct: 1,
+                explanation: "At the age of six = ở tuổi 6"
+            },
+            {
+                id: 114,
+                text: "The headmaster told them to go to their classroom _____.",
+                options: ["at once", "at the age", "at his own speed", "at a glance"],
+                correct: 0,
+                explanation: "at once = ngay lập tức"
+            },
+            {
+                id: 115,
+                text: "I'm really sorry, but I didn't have _____ that your mother was so seriously ill.",
+                options: ["the chance", "an argument", "a lot in common", "the slightest idea"],
+                correct: 3,
+                explanation: "not have the slightest idea = không hề hay biết"
+            },
+            {
+                id: 116,
+                text: "The chief editor had _____ at the whole magazine before it was printed.",
+                options: ["an effect", "a look", "a lot in common", "an argument"],
+                correct: 1,
+                explanation: "have a look at = nhìn qua, xem qua"
+            },
+            {
+                id: 117,
+                text: "I'm sure that he had _____ leaving you here all by yourself.",
+                options: ["a look at", "the chance", "no intention of", "an effect on"],
+                correct: 2,
+                explanation: "have no intention of + V-ing = không có ý định"
+            },
+            {
+                id: 118,
+                text: "Unfortunately, they had a big _____ their supervisor yesterday morning.",
+                options: ["effect on", "intention of", "look at", "argument with"],
+                correct: 3,
+                explanation: "have an argument with sb = cãi nhau với ai"
+            },
+            {
+                id: 119,
+                text: "Gregory never _____ what his mother tells him.",
+                options: ["informs", "is used to", "pays attention to", "makes his way to"],
+                correct: 2,
+                explanation: "pay attention to = chú ý đến"
+            },
+            {
+                id: 120,
+                text: "Mona's teacher _____ her from taking the exams.",
+                options: ["informed", "discouraged", "waited", "made"],
+                correct: 1,
+                explanation: "discourage sb from V-ing = ngăn cản ai làm gì"
+            }
+        ];
+
+        let userAnswers = {};
+
+        function renderQuiz() {
+            const quizDiv = document.getElementById('quiz');
+            quizDiv.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <div class="question-text">${q.id}. ${q.text}</div>
+                    <div class="options">
+                        ${q.options.map((opt, i) => `
+                            <div class="option" onclick="selectOption(${q.id}, ${i}, this)">
+                                ${String.fromCharCode(65 + i)}. ${opt}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="explanation" id="explanation-${q.id}">
+                        💡 ${q.explanation}
+                    </div>
+                `;
+                quizDiv.appendChild(questionDiv);
+            });
+        }
+
+        function selectOption(questionId, optionIndex, element) {
+            userAnswers[questionId] = optionIndex;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function checkAnswers() {
+            let correct = 0;
+            let total = questions.length;
+
+            questions.forEach(q => {
+                const options = document.querySelectorAll(`.question:nth-child(${questions.indexOf(q) + 1}) .option`);
+                const explanation = document.getElementById(`explanation-${q.id}`);
+                
+                options.forEach((opt, i) => {
+                    opt.style.pointerEvents = 'none';
+                    if (i === q.correct) {
+                        opt.classList.add('correct');
+                    } else if (userAnswers[q.id] === i && i !== q.correct) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+
+                if (userAnswers[q.id] === q.correct) {
+                    correct++;
+                }
+
+                explanation.classList.add('show');
+            });
+
+            const resultDiv = document.getElementById('result');
+            const percentage = Math.round((correct / total) * 100);
+            
+            resultDiv.className = 'result show ' + (percentage >= 70 ? 'good' : 'bad');
+            resultDiv.innerHTML = `
+                🎯 Kết quả: ${correct}/${total} (${percentage}%)<br>
+                ${percentage >= 70 ? 'Xuất sắc! 🌟' : percentage >= 50 ? 'Khá tốt! 👍' : 'Cần cố gắng thêm! 💪'}
+            `;
+
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            userAnswers = {};
+            document.getElementById('result').classList.remove('show');
+            renderQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        renderQuiz();
+    </script>
+</body>
+</html>

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz 16-25 | Reading Signs & Notices</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #2c5364;
+        }
+
+        h1 {
+            color: #2c5364;
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .sign-box {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            border: 2px solid #e94560;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 6px solid #2c5364;
+            transition: all 0.3s;
+        }
+
+        .question:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #2c5364;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 14px 18px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+
+        .option:hover {
+            border-color: #2c5364;
+            background: #e8f4f8;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: #2c5364;
+            background: #2c5364;
+            color: white;
+        }
+
+        .option.correct {
+            border-color: #27ae60;
+            background: #27ae60;
+            color: white;
+            animation: pulse 0.5s;
+        }
+
+        .option.incorrect {
+            border-color: #e74c3c;
+            background: #e74c3c;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.15em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-check {
+            background: linear-gradient(135deg, #2c5364, #203a43);
+            color: white;
+        }
+
+        .btn-check:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(44,83,100,0.4);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(231,76,60,0.4);
+        }
+
+        .result {
+            text-align: center;
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 15px;
+            font-size: 1.3em;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+            animation: slideDown 0.5s;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result.good {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+        }
+
+        .result.medium {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+
+        .result.bad {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .explanation {
+            margin-top: 12px;
+            padding: 12px 15px;
+            background: #fff3cd;
+            border-radius: 8px;
+            font-size: 0.92em;
+            color: #856404;
+            display: none;
+            border-left: 4px solid #ffc107;
+        }
+
+        .explanation.show {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2c5364, #e94560);
+            border-radius: 4px;
+            transition: width 0.5s;
+            width: 0%;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 0.95em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Reading Signs & Notices</h1>
+            <p class="subtitle">Câu 16 – 25 | Chọn ý nghĩa đúng của biển báo/thông báo</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="score-display" id="scoreDisplay">Đã trả lời: 0/10</div>
+
+        <div id="quiz"></div>
+
+        <div class="btn-group">
+            <button class="btn btn-check" onclick="checkAnswers()">✅ Kiểm Tra Đáp Án</button>
+            <button class="btn btn-reset" onclick="resetQuiz()">🔄 Làm Lại</button>
+        </div>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 16,
+                sign: "ALL PRICES REDUCED THIS WEEK",
+                text: "What does this sign mean?",
+                options: [
+                    "Everything is cheaper this week.",
+                    "No extra charges next week.",
+                    "Usual prices this week.",
+                    "Cheaper prices next week."
+                ],
+                correct: 0,
+                explanation: "'All prices reduced this week' = Tất cả giá đều được giảm trong tuần này → Everything is cheaper this week."
+            },
+            {
+                id: 17,
+                sign: "WE CAN DELIVER YOUR GROCERIES",
+                text: "What does this sign mean?",
+                options: [
+                    "You can send your groceries from here.",
+                    "You can store your groceries here.",
+                    "You can get your free groceries here.",
+                    "You can have your groceries sent to you."
+                ],
+                correct: 3,
+                explanation: "'Deliver' = giao hàng đến tận nơi → You can have your groceries sent to you (bạn có thể được giao tạp hóa tận nhà)."
+            },
+            {
+                id: 18,
+                sign: "TWO JACKETS CLEANED FOR THE PRICE OF ONE",
+                text: "What does this sign mean?",
+                options: [
+                    "Cleaning now costs twice as much.",
+                    "Cleaning costs are now cheaper.",
+                    "Cleaning costs are going up.",
+                    "Cleaning costs will stay the same."
+                ],
+                correct: 1,
+                explanation: "2 áo giặt với giá 1 áo = giảm giá → Cleaning costs are now cheaper (chi phí giặt là rẻ hơn)."
+            },
+            {
+                id: 19,
+                sign: "PARKING SPACE FOR STATION USERS ONLY",
+                text: "What does this sign mean?",
+                options: [
+                    "You must pay to park here.",
+                    "If you use the train you can park here.",
+                    "This space is for railway officials.",
+                    "No one is allowed to park here."
+                ],
+                correct: 1,
+                explanation: "'Station users only' = chỉ dành cho người sử dụng nhà ga → If you use the train you can park here."
+            },
+            {
+                id: 20,
+                sign: "PASSENGERS MUST BE IN POSSESSION OF A TICKET BEFORE TRAVELLING",
+                text: "What does this sign mean?",
+                options: [
+                    "You can buy your ticket during the journey.",
+                    "You pay when you get off.",
+                    "You have to book a seat before traveling.",
+                    "You have to buy a ticket before your journey."
+                ],
+                correct: 3,
+                explanation: "'In possession of a ticket before travelling' = phải có vé trước khi đi → You have to buy a ticket before your journey."
+            },
+            {
+                id: 21,
+                sign: "BUS RULES: 1) Sit in assigned seat 2) Use inside voice 3) Hands & feet to self 4) Respect quiet signal 5) Save snacks for later",
+                text: "What does this sign mean?",
+                options: [
+                    "Passengers are allowed to change their seats.",
+                    "Passengers are allowed to eat snacks on the bus.",
+                    "Passengers can make noise on the bus.",
+                    "Passengers have to follow the bus rules."
+                ],
+                correct: 3,
+                explanation: "Biển báo liệt kê các quy tắc trên xe buýt → Passengers have to follow the bus rules (hành khách phải tuân theo quy tắc)."
+            },
+            {
+                id: 22,
+                sign: "KNOCK BEFORE ENTERING",
+                text: "What does this sign mean?",
+                options: [
+                    "Knock the door if you want to enter when it does not open.",
+                    "Open the door when you want to enter.",
+                    "You are not allowed to enter when the door does not open.",
+                    "You are not allowed to enter if the door is open."
+                ],
+                correct: 0,
+                explanation: "'Knock before entering' = gõ cửa trước khi vào → Knock the door if you want to enter when it does not open."
+            },
+            {
+                id: 23,
+                sign: "FLOOD WARNING – AREA FLOODING",
+                text: "What does this sign mean?",
+                options: [
+                    "It's unsafe to go ahead because the area is flooding.",
+                    "You will be drown if you turn around.",
+                    "You should go ahead if you want to avoid flooding.",
+                    "If you can swim, you can go ahead."
+                ],
+                correct: 0,
+                explanation: "Cảnh báo lũ → It's unsafe to go ahead because the area is flooding (không an toàn để đi tiếp vì khu vực đang bị lũ)."
+            },
+            {
+                id: 24,
+                sign: "Children's play area – No dogs allowed",
+                text: "What does this sign mean?",
+                options: [
+                    "This is dogs' play area.",
+                    "Children can play with dogs in this area.",
+                    "Dogs are not allowed to enter this area.",
+                    "People can take their dogs with them in this area."
+                ],
+                correct: 2,
+                explanation: "'No dogs allowed' = không cho phép chó vào → Dogs are not allowed to enter this area."
+            },
+            {
+                id: 25,
+                sign: "LONG SLEEVE SHIRT AND TROUSERS MUST BE WORN",
+                text: "What does this sign mean?",
+                options: [
+                    "People must wear long sleeve shirt and trousers in this area.",
+                    "People must wear casual clothes in this area except long sleeve shirt and trousers.",
+                    "People have to wear formal clothes in this area except long sleeve shirt and trousers.",
+                    "Long sleeve shirt and trousers should be worn in this area."
+                ],
+                correct: 0,
+                explanation: "'Must be worn' = bắt buộc phải mặc → People must wear long sleeve shirt and trousers in this area."
+            }
+        ];
+
+        let userAnswers = {};
+
+        function renderQuiz() {
+            const quizDiv = document.getElementById('quiz');
+            quizDiv.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <div class="sign-box">📌 ${q.sign}</div>
+                    <div class="question-text">
+                        <span class="question-number">${q.id}</span>
+                        ${q.text}
+                    </div>
+                    <div class="options">
+                        ${q.options.map((opt, i) => `
+                            <div class="option" onclick="selectOption(${q.id}, ${i}, this)">
+                                <strong>${String.fromCharCode(65 + i)}.</strong> ${opt}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="explanation" id="explanation-${q.id}">
+                        💡 ${q.explanation}
+                    </div>
+                `;
+                quizDiv.appendChild(questionDiv);
+            });
+        }
+
+        function selectOption(questionId, optionIndex, element) {
+            userAnswers[questionId] = optionIndex;
+
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(userAnswers).length;
+            const percentage = (answered / questions.length) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('scoreDisplay').textContent = `Đã trả lời: ${answered}/${questions.length}`;
+        }
+
+        function checkAnswers() {
+            let correct = 0;
+            let total = questions.length;
+
+            questions.forEach(q => {
+                const questionDiv = document.querySelectorAll('.question')[questions.indexOf(q)];
+                const options = questionDiv.querySelectorAll('.option');
+                const explanation = document.getElementById(`explanation-${q.id}`);
+
+                options.forEach((opt, i) => {
+                    opt.style.pointerEvents = 'none';
+                    if (i === q.correct) {
+                        opt.classList.add('correct');
+                    } else if (userAnswers[q.id] === i && i !== q.correct) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+
+                if (userAnswers[q.id] === q.correct) {
+                    correct++;
+                }
+
+                explanation.classList.add('show');
+            });
+
+            const resultDiv = document.getElementById('result');
+            const percentage = Math.round((correct / total) * 100);
+
+            let message = '';
+            let className = '';
+
+            if (percentage >= 80) {
+                message = `🌟 Xuất sắc! ${correct}/${total} (${percentage}%)<br>Bạn đọc hiểu biển báo rất tốt!`;
+                className = 'good';
+            } else if (percentage >= 50) {
+                message = `👍 Khá tốt! ${correct}/${total} (${percentage}%)<br>Cần ôn thêm một chút nhé!`;
+                className = 'medium';
+            } else {
+                message = `💪 Cần cố gắng! ${correct}/${total} (${percentage}%)<br>Hãy đọc kỹ giải thích và làm lại nhé!`;
+                className = 'bad';
+            }
+
+            resultDiv.className = 'result show ' + className;
+            resultDiv.innerHTML = message;
+
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            userAnswers = {};
+            document.getElementById('result').classList.remove('show');
+            document.getElementById('progressFill').style.width = '0%';
+            document.getElementById('scoreDisplay').textContent = 'Đã trả lời: 0/10';
+            renderQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        renderQuiz();
+    </script>
+</body>
+</html>
