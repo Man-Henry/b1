@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Nghe Hiểu - Listening Comprehension</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a1a2e;
+            margin-bottom: 5px;
+            font-size: 30px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            border: 2px solid #0f3460;
+            border-radius: 10px;
+            background: white;
+            color: #0f3460;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            background: #e8f0fe;
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: #0f3460;
+            color: white;
+        }
+
+        .text-section {
+            display: none;
+        }
+
+        .text-section.active {
+            display: block;
+        }
+
+        .text-header {
+            background: linear-gradient(135deg, #0f3460, #533483);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .text-header .text-number {
+            background: rgba(255,255,255,0.2);
+            padding: 3px 12px;
+            border-radius: 6px;
+            margin-right: 10px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 18px 22px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            border-left: 5px solid #0f3460;
+            transition: all 0.3s ease;
+        }
+
+        .question.correct {
+            border-left-color: #4CAF50;
+            background: #e8f5e9;
+        }
+
+        .question.incorrect {
+            border-left-color: #f44336;
+            background: #ffebee;
+        }
+
+        .question-text {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 12px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .question-text .q-num {
+            color: #0f3460;
+            font-weight: 800;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            background: white;
+        }
+
+        .option:hover {
+            background: #e8f0fe;
+            border-color: #0f3460;
+        }
+
+        .option.selected {
+            background: #e8f0fe;
+            border-color: #0f3460;
+        }
+
+        .option.correct-option {
+            background: #c8e6c9;
+            border-color: #4CAF50;
+        }
+
+        .option.incorrect-option {
+            background: #ffcdd2;
+            border-color: #f44336;
+        }
+
+        .option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #0f3460;
+            cursor: pointer;
+        }
+
+        .option label {
+            font-size: 15px;
+            color: #333;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .option-letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #0f3460;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-check {
+            background: linear-gradient(135deg, #4CAF50, #2e7d32);
+            color: white;
+        }
+
+        .btn-check:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(76,175,80,0.4);
+        }
+
+        .btn-reveal {
+            background: linear-gradient(135deg, #2196F3, #1565C0);
+            color: white;
+        }
+
+        .btn-reveal:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(33,150,243,0.4);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #f44336, #c62828);
+            color: white;
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(244,67,54,0.4);
+        }
+
+        .score-board {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, #0f3460, #533483);
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 25px;
+            display: none;
+        }
+
+        .score-board h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .score-board p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .score-bar {
+            width: 80%;
+            max-width: 400px;
+            height: 12px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
+            margin: 15px auto 0;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            border-radius: 6px;
+            transition: width 1s ease;
+        }
+
+        .instructions {
+            background: #fff3e0;
+            border: 1px solid #ffcc80;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: #e65100;
+        }
+
+        .instructions strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+
+        .result-icon {
+            font-size: 22px;
+            margin-left: 8px;
+        }
+
+        .explanation {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+            font-size: 14px;
+            color: #1565C0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            .tab-btn {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎧 Bài Tập Nghe Hiểu</h1>
+        <p class="subtitle">Listening Comprehension Exercises</p>
+
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="showText(32)">TEXT 32</button>
+            <button class="tab-btn" onclick="showText(35)">TEXT 35</button>
+            <button class="tab-btn" onclick="showText(56)">TEXT 56</button>
+            <button class="tab-btn" onclick="showText(68)">TEXT 68</button>
+        </div>
+
+        <div class="instructions">
+            <strong>📌 Hướng dẫn:</strong>
+            Nghe đoạn hội thoại và chọn đáp án đúng nhất (A, B, C) hoặc xác định True/False.
+            Chọn đáp án rồi nhấn <strong>"Kiểm tra"</strong> để xem kết quả.
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-check" onclick="checkAnswers()">✅ Kiểm tra</button>
+            <button class="btn btn-reveal" onclick="revealAnswers()">👁️ Xem đáp án</button>
+            <button class="btn btn-reset" onclick="resetAll()">🔄 Làm mới</button>
+        </div>
+
+        <div class="score-board" id="scoreBoard">
+            <h2 id="scoreText"></h2>
+            <p id="scoreDetail"></p>
+            <div class="score-bar"><div class="score-fill" id="scoreFill"></div></div>
+        </div>
+
+        <!-- TEXT 32 -->
+        <div class="text-section active" id="text-32">
+            <div class="text-header">
+                <span class="text-number">TEXT 32</span>
+                Listen carefully and choose the best answer (A, B, C) for each question.
+            </div>
+
+            <div class="question" id="q32-0">
+                <div class="question-text"><span class="q-num">1.</span> What is the name of the caller?</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(32, 0, 'A')">
+                        <input type="radio" name="q32-0" id="q32-0-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q32-0-A">Nick</label>
+                    </div>
+                    <div class="option" onclick="selectOption(32, 0, 'B')">
+                        <input type="radio" name="q32-0" id="q32-0-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q32-0-B">Nate</label>
+                    </div>
+                    <div class="option" onclick="selectOption(32, 0, 'C')">
+                        <input type="radio" name="q32-0" id="q32-0-C" value="C">
+                        <span class="option-letter">C</span>
+                        <label for="q32-0-C">Neil</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q32-1">
+                <div class="question-text"><span class="q-num">2.</span> According to the girl, her father:</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(32, 1, 'A')">
+                        <input type="radio" name="q32-1" id="q32-1-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q32-1-A">is not home.</label>
+                    </div>
+                    <div class="option" onclick="selectOption(32, 1, 'B')">
+                        <input type="radio" name="q32-1" id="q32-1-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q32-1-B">is on another line.</label>
+                    </div>
+                    <div class="option" onclick="selectOption(32, 1, 'C')">
+                        <input type="radio" name="q32-1" id="q32-1-C" value="C">
+                        <span class="option-letter">C</span>
+                        <label for="q32-1-C">can't come to the telephone.</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q32-2">
+                <div class="question-text"><span class="q-num">3.</span> What is the man's telephone number?</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(32, 2, 'A')">
+                        <input type="radio" name="q32-2" id="q32-2-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q32-2-A">598-7482</label>
+                    </div>
+                    <div class="option" onclick="selectOption(32, 2, 'B')">
+                        <input type="radio" name="q32-2" id="q32-2-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q32-2-B">587-4728</label>
+                    </div>
+                    <div class="option" onclick="selectOption(32, 2, 'C')">
+                        <input type="radio" name="q32-2" id="q32-2-C" value="C">
+                        <span class="option-letter">C</span>
+                        <label for="q32-2-C">589-7248</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q32-3">
+                <div class="question-text"><span class="q-num">4.</span> The man tells the girl:</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(32, 3, 'A')">
+                        <input type="radio" name="q32-3" id="q32-3-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q32-3-A">that he will call again sometime after 7:00 PM.</label>
+                    </div>
+                    <div class="option" onclick="selectOption(32, 3, 'B')">
+                        <input type="radio" name="q32-3" id="q32-3-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q32-3-B">to ask her father to call him later.</label>
+                    </div>
+                    <div class="option" onclick="selectOption(32, 3, 'C')">
+                        <input type="radio" name="q32-3" id="q32-3-C" value="C">
+                        <span class="option-letter">C</span>
+                        <label for="q32-3-C">that he will drop by around 8:30 PM.</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q32-4">
+                <div class="question-text"><span class="q-num">5.</span> What does the girl refuse to tell the caller?</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(32, 4, 'A')">
+                        <input type="radio" name="q32-4" id="q32-4-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q32-4-A">Her age</label>
+                    </div>
+                    <div class="option" onclick="selectOption(32, 4, 'B')">
+                        <input type="radio" name="q32-4" id="q32-4-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q32-4-B">Her name</label>
+                    </div>
+                    <div class="option" onclick="selectOption(32, 4, 'C')">
+                        <input type="radio" name="q32-4" id="q32-4-C" value="C">
+                        <span class="option-letter">C</span>
+                        <label for="q32-4-C">Her address</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEXT 35 -->
+        <div class="text-section" id="text-35">
+            <div class="text-header">
+                <span class="text-number">TEXT 35</span>
+                Listen carefully and choose the best answer (A, B, C) for each question.
+            </div>
+
+            <div class="question" id="q35-0">
+                <div class="question-text"><span class="q-num">1.</span> What does the man plan to wear during the summer months?</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(35, 0, 'A')">
+                        <input type="radio" name="q35-0" id="q35-0-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q35-0-A">A cool hat</label>
+                    </div>
+                    <div class="option" onclick="selectOption(35, 0, 'B')">
+                        <input type="radio" name="q35-0" id="q35-0-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q35-0-B">Casual shoes</label>
+                    </div>
+                    <div class="option" onclick="selectOption(35, 0, 'C')">
+                        <input type="radio" name="q35-0" id="q35-0-C" value="C">
+                        <span class="option-letter">C</span>
+                        <label for="q35-0-C">Light pants</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q35-1">
+                <div class="question-text"><span class="q-num">2.</span> What is one thing the man is NOT going to pack for the winter season?</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(35, 1, 'A')">
+                        <input type="radio" name="q35-1" id="q35-1-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q35-1-A">A coat</label>
+                    </div>
+                    <div class="option" onclick="selectOption(35, 1, 'B')">
+                        <input type="radio" name="q35-1" id="q35-1-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q35-1-B">Some sweaters</label>
+                    </div>
+                    <div class="option" onclick="selectOption(35, 1, 'C')">
+                        <input type="radio" name="q35-1" id="q35-1-C" value="C">
+                        <span class="option-letter">C</span>
+                        <label for="q35-1-C">A jacket</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q35-2">
+                <div class="question-text"><span class="q-num">3.</span> What is the weather like in the spring?</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(35, 2, 'A')">
+                        <input type="radio" name="q35-2" id="q35-2-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q35-2-A">It's windy.</label>
+                    </div>
+                    <div class="option" onclick="selectOption(35, 2, 'B')">
+                        <input type="radio" name="q35-2" id="q35-2-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q35-2-B">It's rainy.</label>
+                    </div>
+                    <div class="option" onclick="selectOption(35, 2, 'C')">
+                        <input type="radio" name="q35-2" id="q35-2-C" value="C">
+                        <span class="option-letter">C</span>
+                        <label for="q35-2-C">It's cool.</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q35-3">
+                <div class="question-text"><span class="q-num">4.</span> What is an example of an occasion where the man might need formal clothes?</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(35, 3, 'A')">
+                        <input type="radio" name="q35-3" id="q35-3-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q35-3-A">A party</label>
+                    </div>
+                    <div class="option" onclick="selectOption(35, 3, 'B')">
+                        <input type="radio" name="q35-3" id="q35-3-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q35-3-B">A business meeting</label>
+                    </div>
+                    <div class="option" onclick="selectOption(35, 3, 'C')">
+                        <input type="radio" name="q35-3" id="q35-3-C" value="C">
+                        <span class="option-letter">C</span>
+                        <label for="q35-3-C">A wedding</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q35-4">
+                <div class="question-text"><span class="q-num">5.</span> What did the man wear to his high school graduation?</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(35, 4, 'A')">
+                        <input type="radio" name="q35-4" id="q35-4-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q35-4-A">Jeans and tennis shoes</label>
+                    </div>
+                    <div class="option" onclick="selectOption(35, 4, 'B')">
+                        <input type="radio" name="q35-4" id="q35-4-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q35-4-B">A casual shirt and tie</label>
+                    </div>
+                    <div class="option" onclick="selectOption(35, 4, 'C')">
+                        <input type="radio" name="q35-4" id="q35-4-C" value="C">
+                        <span class="option-letter">C</span>
+                        <label for="q35-4-C">A suit and dress shoes</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEXT 56 -->
+        <div class="text-section" id="text-56">
+            <div class="text-header">
+                <span class="text-number">TEXT 56</span>
+                Listen and decide if the following statements are True (T) or False (F).
+            </div>
+
+            <div class="question" id="q56-0">
+                <div class="question-text"><span class="q-num">1.</span> The professor mainly discusses the importance of getting vitamin D from sunshine as an aspect of health.</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(56, 0, 'A')">
+                        <input type="radio" name="q56-0" id="q56-0-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q56-0-A">True</label>
+                    </div>
+                    <div class="option" onclick="selectOption(56, 0, 'B')">
+                        <input type="radio" name="q56-0" id="q56-0-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q56-0-B">False</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q56-1">
+                <div class="question-text"><span class="q-num">2.</span> The speaker's main point is to get enough vitamin D, we need sunshine.</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(56, 1, 'A')">
+                        <input type="radio" name="q56-1" id="q56-1-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q56-1-A">True</label>
+                    </div>
+                    <div class="option" onclick="selectOption(56, 1, 'B')">
+                        <input type="radio" name="q56-1" id="q56-1-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q56-1-B">False</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q56-2">
+                <div class="question-text"><span class="q-num">3.</span> The professor emphasizes her point about getting enough vitamin D by showing what happens when we're in the sun.</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(56, 2, 'A')">
+                        <input type="radio" name="q56-2" id="q56-2-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q56-2-A">True</label>
+                    </div>
+                    <div class="option" onclick="selectOption(56, 2, 'B')">
+                        <input type="radio" name="q56-2" id="q56-2-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q56-2-B">False</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q56-3">
+                <div class="question-text"><span class="q-num">4.</span> Without Vitamin D, we may develop strong bones and teeth.</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(56, 3, 'A')">
+                        <input type="radio" name="q56-3" id="q56-3-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q56-3-A">True</label>
+                    </div>
+                    <div class="option" onclick="selectOption(56, 3, 'B')">
+                        <input type="radio" name="q56-3" id="q56-3-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q56-3-B">False</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q56-4">
+                <div class="question-text"><span class="q-num">5.</span> Too much sunshine can cause skin cancer.</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(56, 4, 'A')">
+                        <input type="radio" name="q56-4" id="q56-4-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q56-4-A">True</label>
+                    </div>
+                    <div class="option" onclick="selectOption(56, 4, 'B')">
+                        <input type="radio" name="q56-4" id="q56-4-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q56-4-B">False</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEXT 68 -->
+        <div class="text-section" id="text-68">
+            <div class="text-header">
+                <span class="text-number">TEXT 68</span>
+                Listen to Jim Allen and decide if the following statements are True (T) or False (F).
+            </div>
+
+            <div class="question" id="q68-0">
+                <div class="question-text"><span class="q-num">1.</span> Jim Allen lives in the center of Toronto.</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(68, 0, 'A')">
+                        <input type="radio" name="q68-0" id="q68-0-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q68-0-A">True</label>
+                    </div>
+                    <div class="option" onclick="selectOption(68, 0, 'B')">
+                        <input type="radio" name="q68-0" id="q68-0-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q68-0-B">False</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q68-1">
+                <div class="question-text"><span class="q-num">2.</span> His wife died ten years ago, so now he lives alone.</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(68, 1, 'A')">
+                        <input type="radio" name="q68-1" id="q68-1-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q68-1-A">True</label>
+                    </div>
+                    <div class="option" onclick="selectOption(68, 1, 'B')">
+                        <input type="radio" name="q68-1" id="q68-1-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q68-1-B">False</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q68-2">
+                <div class="question-text"><span class="q-num">3.</span> Until last year, he worked in a paper factory, but now he is retired.</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(68, 2, 'A')">
+                        <input type="radio" name="q68-2" id="q68-2-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q68-2-A">True</label>
+                    </div>
+                    <div class="option" onclick="selectOption(68, 2, 'B')">
+                        <input type="radio" name="q68-2" id="q68-2-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q68-2-B">False</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q68-3">
+                <div class="question-text"><span class="q-num">4.</span> He left school when he was 15 and started work in the factory.</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(68, 3, 'A')">
+                        <input type="radio" name="q68-3" id="q68-3-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q68-3-A">True</label>
+                    </div>
+                    <div class="option" onclick="selectOption(68, 3, 'B')">
+                        <input type="radio" name="q68-3" id="q68-3-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q68-3-B">False</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" id="q68-4">
+                <div class="question-text"><span class="q-num">5.</span> Now he is living in Argentina.</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(68, 4, 'A')">
+                        <input type="radio" name="q68-4" id="q68-4-A" value="A">
+                        <span class="option-letter">A</span>
+                        <label for="q68-4-A">True</label>
+                    </div>
+                    <div class="option" onclick="selectOption(68, 4, 'B')">
+                        <input type="radio" name="q68-4" id="q68-4-B" value="B">
+                        <span class="option-letter">B</span>
+                        <label for="q68-4-B">False</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {
+            32: ['A', 'C', 'C', 'B', 'B'],
+            35: ['B', 'A', 'B', 'C', 'A'],
+            56: ['A', 'A', 'B', 'B', 'A'],
+            68: ['B', 'B', 'A', 'A', 'B']
+        };
+
+        let currentText = 32;
+        let userAnswers = { 32: {}, 35: {}, 56: {}, 68: {} };
+
+        function showText(num) {
+            currentText = num;
+            document.querySelectorAll('.text-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(`text-${num}`).classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('scoreBoard').style.display = 'none';
+        }
+
+        function selectOption(textNum, qIndex, value) {
+            userAnswers[textNum][qIndex] = value;
+            const radio = document.getElementById(`q${textNum}-${qIndex}-${value}`);
+            radio.checked = true;
+
+            const question = document.getElementById(`q${textNum}-${qIndex}`);
+            question.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            radio.closest('.option').classList.add('selected');
+        }
+
+        function checkAnswers() {
+            const ans = answers[currentText];
+            let correct = 0;
+            let total = ans.length;
+            let answered = 0;
+
+            ans.forEach((correctAns, index) => {
+                const question = document.getElementById(`q${currentText}-${index}`);
+                const userAns = userAnswers[currentText][index];
+
+                question.classList.remove('correct', 'incorrect');
+                question.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct-option', 'incorrect-option');
+                });
+
+                if (userAns) {
+                    answered++;
+                    if (userAns === correctAns) {
+                        question.classList.add('correct');
+                        question.querySelector(`input[value="${userAns}"]`).closest('.option').classList.add('correct-option');
+                        correct++;
+                    } else {
+                        question.classList.add('incorrect');
+                        question.querySelector(`input[value="${userAns}"]`).closest('.option').classList.add('incorrect-option');
+                        question.querySelector(`input[value="${correctAns}"]`).closest('.option').classList.add('correct-option');
+                    }
+                }
+            });
+
+            const scoreBoard = document.getElementById('scoreBoard');
+            scoreBoard.style.display = 'block';
+            document.getElementById('scoreText').textContent = `Kết quả TEXT ${currentText}: ${correct}/${total}`;
+
+            const percentage = Math.round((correct / total) * 100);
+            let message = '';
+            if (percentage === 100) message = '🏆 Xuất sắc! Bạn đã làm đúng tất cả!';
+            else if (percentage >= 80) message = '🌟 Rất tốt! Cố gắng thêm một chút nữa!';
+            else if (percentage >= 60) message = '👍 Khá tốt! Hãy ôn tập thêm nhé!';
+            else if (percentage >= 40) message = '📚 Cần cố gắng nhiều hơn!';
+            else message = '💪 Đừng bỏ cuộc! Hãy thử lại nhé!';
+
+            document.getElementById('scoreDetail').textContent = `${percentage}% - ${message}`;
+            document.getElementById('scoreFill').style.width = `${percentage}%`;
+        }
+
+        function revealAnswers() {
+            const ans = answers[currentText];
+            ans.forEach((correctAns, index) => {
+                const question = document.getElementById(`q${currentText}-${index}`);
+                question.classList.remove('incorrect');
+                question.classList.add('correct');
+                question.querySelectorAll('.option').forEach(opt => opt.classList.remove('incorrect-option', 'correct-option'));
+
+                const radio = document.getElementById(`q${currentText}-${index}-${correctAns}`);
+                radio.checked = true;
+                radio.closest('.option').classList.add('correct-option');
+                radio.closest('.option').classList.add('selected');
+                userAnswers[currentText][index] = correctAns;
+            });
+
+            const scoreBoard = document.getElementById('scoreBoard');
+            scoreBoard.style.display = 'block';
+            document.getElementById('scoreText').textContent = `Đáp án TEXT ${currentText}: ${ans.length}/${ans.length}`;
+            document.getElementById('scoreDetail').textContent = '100% - Đây là đáp án tham khảo!';
+            document.getElementById('scoreFill').style.width = '100%';
+        }
+
+        function resetAll() {
+            const ans = answers[currentText];
+            ans.forEach((_, index) => {
+                const question = document.getElementById(`q${currentText}-${index}`);
+                question.classList.remove('correct', 'incorrect');
+                question.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected', 'correct-option', 'incorrect-option');
+                });
+                question.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+                delete userAnswers[currentText][index];
+            });
+            document.getElementById('scoreBoard').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

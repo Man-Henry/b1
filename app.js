@@ -248,7 +248,9 @@ function renderNavigation() {
             'grammar-vocab': '📝',
             'signs-notices': '🪧',
             'cloze-test': '🕳️',
-            'reading-comp': '📖'
+            'reading-comp': '📖',
+            'sentence-transform': '✍️',
+            'listening-comp': '🎧'
         };
         const icon = iconMap[mod.id] || '📚';
         const score = AppState.userStats.moduleScores[mod.id];
@@ -285,6 +287,7 @@ function renderNavigation() {
 }
 
 function navigateTo(viewName) {
+    stopListeningAudio();
     AppState.currentView = viewName;
     if (viewName !== 'module') {
         AppState.currentModuleId = null;
@@ -335,9 +338,9 @@ function renderDashboard() {
         <div class="hero-banner">
             <div class="hero-content">
                 <div class="hero-badge">✨ Cổng Học & Luyện Thi Tiếng Anh Đột Phá</div>
-                <h1 class="hero-title">Chinh Phục Ngữ Pháp & Đọc Hiểu Toàn Diện</h1>
+                <h1 class="hero-title">Chinh Phục 6 Kỹ Năng Tiếng Anh B1 Toàn Diện</h1>
                 <p class="hero-desc">
-                    Hệ thống tích hợp 4 chuyên đề chuẩn quốc tế: Trắc nghiệm ngữ pháp nâng cao, đọc hiểu biển báo thực tế, đục lỗ khảo cổ học và các bài đọc phân tích chuyên sâu.
+                    Hệ thống tích hợp 6 chuyên đề chuẩn khảo thí: Ngữ pháp trắc nghiệm, Biển báo công cộng, Điền từ khảo cổ, Đọc hiểu chuyên sâu, Viết lại câu không đổi nghĩa và Luyện nghe Audio giọng bản xứ.
                 </p>
                 <div class="hero-actions">
                     <button class="btn-primary-hero" onclick="openModule('grammar-vocab')">
@@ -385,7 +388,7 @@ function renderDashboard() {
         </div>
 
         <div class="section-header">
-            <h2>🎯 Lộ Trình 4 Chuyên Đề Trọng Điểm</h2>
+            <h2>🎯 Lộ Trình 6 Chuyên Đề Khảo Thí Toàn Diện</h2>
             <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Hỗ trợ 2 chế độ: Luyện tập & Thi tính giờ</span>
         </div>
 
@@ -421,7 +424,9 @@ function renderModuleCard(mod) {
         'grammar-vocab': '📝',
         'signs-notices': '🪧',
         'cloze-test': '🕳️',
-        'reading-comp': '📖'
+        'reading-comp': '📖',
+        'sentence-transform': '✍️',
+        'listening-comp': '🎧'
     };
     const icon = iconMap[mod.id] || '📚';
     const score = AppState.userStats.moduleScores[mod.id];
@@ -493,7 +498,7 @@ function renderQuizView() {
         allQuestions = mod.questions;
     }
 
-    const isSplit = mod.id === 'cloze-test' || mod.id === 'reading-comp';
+    const isSplit = mod.id === 'cloze-test' || mod.id === 'reading-comp' || mod.id === 'listening-comp';
 
     // Start timer if exam mode
     if (AppState.examMode === 'exam') {
@@ -609,8 +614,187 @@ function renderPassageColumn(mod) {
                 `).join('')}
             </div>
         `;
+    } else if (mod.id === 'listening-comp') {
+        const firstSub = mod.subSections[0];
+        currentListeningSubId = firstSub.id;
+        return `
+            <div class="passage-card" id="listening-player-container">
+                <div class="passage-header">
+                    <div>
+                        <h3 class="passage-title">🎧 Luyện Nghe Audio</h3>
+                        <div class="passage-meta">Bấm chọn bài để nghe giọng đọc và xem câu hỏi</div>
+                    </div>
+                    <div class="passage-tools">
+                        <button class="font-size-btn" onclick="adjustPassageFontSize(-0.05)" title="Giảm cỡ chữ">A-</button>
+                        <button class="font-size-btn" onclick="adjustPassageFontSize(0.05)" title="Tăng cỡ chữ">A+</button>
+                    </div>
+                </div>
+
+                <div class="listening-tab-row" style="display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap;">
+                    ${mod.subSections.map((sub, i) => `
+                        <button class="action-btn listening-sub-btn" 
+                                id="btn-listen-tab-${sub.id}"
+                                style="${i === 0 ? 'background: var(--primary); color: white;' : ''}"
+                                onclick="switchListeningSubSection('${sub.id}')">
+                            ${sub.id.replace('text-', 'TEXT ')}
+                        </button>
+                    `).join('')}
+                </div>
+
+                <div id="listening-sub-content">
+                    ${renderActiveListeningSub(firstSub)}
+                </div>
+            </div>
+        `;
     }
     return '';
+}
+
+function renderActiveListeningSub(sub) {
+    return `
+        <div class="audio-player-card" style="background: var(--bg-card-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px; margin-bottom: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h4 style="font-size: 1.05rem; color: var(--primary); font-weight: 800; margin: 0;">${sub.title}</h4>
+                <span style="font-size: 0.72rem; background: var(--primary-light); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-weight: 700;">Native Voice</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">${sub.description}</p>
+
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <button class="btn-primary-hero" id="audio-play-btn" style="padding: 9px 18px; font-size: 0.88rem;" onclick="toggleAudioPlayback('${sub.id}')">
+                    <span>▶</span> Nghe Bài Đọc (Audio)
+                </button>
+                <button class="action-btn" id="audio-rate-btn" onclick="cycleAudioRate()" title="Đổi tốc độ phát">
+                    ${currentSpeechRate}x
+                </button>
+                <button class="action-btn" onclick="stopListeningAudio()" title="Dừng âm thanh">
+                    ⏹️ Dừng
+                </button>
+            </div>
+        </div>
+
+        <details style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px 18px; background: var(--bg-card); cursor: pointer;">
+            <summary style="font-weight: 700; color: var(--primary); outline: none;">📄 Xem Transcript Lời Thoại (Kèm Bản Dịch)</summary>
+            <div style="margin-top: 14px; font-size: 0.92rem; line-height: 1.7; border-top: 1px solid var(--border-color); padding-top: 14px;">
+                <div style="font-weight: 700; margin-bottom: 6px; color: var(--text-primary);">🇺🇸 Lời thoại tiếng Anh:</div>
+                <div style="background: var(--bg-card-subtle); padding: 12px; border-radius: 6px; margin-bottom: 12px; font-style: italic;">
+                    ${sub.transcript.replace(/\n/g, '<br>')}
+                </div>
+                <div style="font-weight: 700; margin-bottom: 6px; color: var(--text-primary);">🇻🇳 Bản dịch tiếng Việt:</div>
+                <div style="background: var(--bg-card-subtle); padding: 12px; border-radius: 6px;">
+                    ${sub.transcriptVi.replace(/\n/g, '<br>')}
+                </div>
+            </div>
+        </details>
+    `;
+}
+
+let currentUtterance = null;
+let currentSpeechRate = 1.0;
+let isAudioPlaying = false;
+let currentListeningSubId = 'text-32';
+
+function toggleAudioPlayback(textId) {
+    if ('speechSynthesis' in window) {
+        if (isAudioPlaying) {
+            window.speechSynthesis.cancel();
+            isAudioPlaying = false;
+            updatePlayButtonUI(false);
+            showToast('Đã dừng phát âm thanh', '⏸️');
+            return;
+        }
+
+        const sub = COURSE_DATA.modules.find(m => m.id === 'listening-comp')
+                              ?.subSections.find(s => s.id === textId);
+        if (!sub) return;
+
+        window.speechSynthesis.cancel();
+        const textToRead = sub.transcript.replace(/Man:|Woman:|Girl:|Professor:|Jim Allen:/g, '');
+        currentUtterance = new SpeechSynthesisUtterance(textToRead);
+        currentUtterance.lang = 'en-US';
+        currentUtterance.rate = currentSpeechRate;
+
+        currentUtterance.onstart = () => {
+            isAudioPlaying = true;
+            updatePlayButtonUI(true);
+            showToast('Đang phát bài nghe tiếng Anh... 🎧', '🔊');
+        };
+
+        currentUtterance.onend = () => {
+            isAudioPlaying = false;
+            updatePlayButtonUI(false);
+            showToast('Đã nghe xong bài đọc! Hãy chọn đáp án nhé.', '✅');
+        };
+
+        currentUtterance.onerror = () => {
+            isAudioPlaying = false;
+            updatePlayButtonUI(false);
+        };
+
+        window.speechSynthesis.speak(currentUtterance);
+    } else {
+        alert('Trình duyệt của bạn không hỗ trợ Web Speech API. Bạn có thể xem lời thoại Transcript trực tiếp bên dưới.');
+    }
+}
+
+function stopListeningAudio() {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+    }
+    isAudioPlaying = false;
+    updatePlayButtonUI(false);
+}
+
+function updatePlayButtonUI(playing) {
+    const btn = document.getElementById('audio-play-btn');
+    if (btn) {
+        btn.innerHTML = playing ? '<span>⏸</span> Dừng Phát' : '<span>▶</span> Nghe Bài Đọc (Audio)';
+        if (playing) btn.style.background = 'var(--error)';
+        else btn.style.background = '';
+    }
+}
+
+function cycleAudioRate() {
+    if (currentSpeechRate === 1.0) currentSpeechRate = 1.2;
+    else if (currentSpeechRate === 1.2) currentSpeechRate = 0.8;
+    else currentSpeechRate = 1.0;
+
+    const rateBtn = document.getElementById('audio-rate-btn');
+    if (rateBtn) rateBtn.innerText = `${currentSpeechRate}x`;
+    showToast(`Tốc độ đọc: ${currentSpeechRate}x`, '⚡');
+
+    if (isAudioPlaying && currentListeningSubId) {
+        stopListeningAudio();
+        toggleAudioPlayback(currentListeningSubId);
+    }
+}
+
+function switchListeningSubSection(subId) {
+    stopListeningAudio();
+    currentListeningSubId = subId;
+    const mod = COURSE_DATA.modules.find(m => m.id === 'listening-comp');
+    if (!mod) return;
+    const sub = mod.subSections.find(s => s.id === subId);
+    if (!sub) return;
+
+    document.querySelectorAll('.listening-sub-btn').forEach(btn => {
+        btn.style.background = '';
+        btn.style.color = '';
+    });
+    const activeBtn = document.getElementById(`btn-listen-tab-${subId}`);
+    if (activeBtn) {
+        activeBtn.style.background = 'var(--primary)';
+        activeBtn.style.color = 'white';
+    }
+
+    const container = document.getElementById('listening-sub-content');
+    if (container) {
+        container.innerHTML = renderActiveListeningSub(sub);
+    }
+
+    const sectionEl = document.getElementById(`section-${subId}`);
+    if (sectionEl) {
+        sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 }
 
 function adjustPassageFontSize(delta) {
@@ -634,13 +818,26 @@ function jumpToReadingText(elementId) {
 function renderQuestionsList(mod, questions) {
     let html = '';
 
-    if (mod.subSections) {
-        // Grouped by section
+    if (mod.type === 'transform') {
+        html += `
+            <div class="instructions-card" style="background: var(--warning-bg); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: 16px 20px; margin-bottom: 24px; color: var(--warning-text); font-size: 0.92rem; line-height: 1.6;">
+                <strong>📌 Hướng dẫn làm bài:</strong> Viết lại câu sao cho nghĩa không đổi, bắt buộc sử dụng từ gợi ý trong ngoặc. Nhập câu trả lời vào ô trống rồi nhấn <b>Enter</b> hoặc bấm nút <b>Kiểm tra</b>.
+            </div>
+        `;
+        questions.forEach((q) => {
+            html += renderTransformQuestion(q);
+        });
+    } else if (mod.subSections) {
         mod.subSections.forEach(sub => {
-            html += `<h3 style="font-size: 1.15rem; color: var(--primary); margin: 20px 0 10px; border-left: 4px solid var(--primary); padding-left: 10px; font-weight: 800;">${sub.title}</h3>`;
+            html += `
+                <div id="section-${sub.id}" class="quiz-sub-section">
+                    <h3 style="font-size: 1.15rem; color: var(--primary); margin: 20px 0 6px; border-left: 4px solid var(--primary); padding-left: 10px; font-weight: 800;">${sub.title}</h3>
+                    ${sub.description ? `<p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">${sub.description}</p>` : ''}
+            `;
             sub.questions.forEach(q => {
                 html += renderSingleQuestion(q);
             });
+            html += `</div>`;
         });
     } else {
         questions.forEach(q => {
@@ -649,6 +846,124 @@ function renderQuestionsList(mod, questions) {
     }
 
     return html;
+}
+
+function renderTransformQuestion(q) {
+    const isBookmarked = AppState.userStats.bookmarkedQuestions.includes(String(q.id));
+    const userAns = AppState.answers[q.id] || '';
+
+    return `
+        <div class="question-card" id="question-${q.id}">
+            <div class="question-meta-bar">
+                <span class="question-badge">Câu ${q.num} • Key Word: <b style="color: var(--primary);">${q.keyword}</b></span>
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" onclick="event.stopPropagation(); toggleBookmark('${q.id}')" title="Lưu câu hỏi">
+                    ★
+                </button>
+            </div>
+
+            <div class="original-sentence-box">
+                ${q.original.replace(q.highlight, `<span style="background: #fef08a; color: #854d0e; padding: 2px 6px; border-radius: 4px; font-weight: 700;">${q.highlight}</span>`)}
+                <span style="color: #ec4899; font-weight: 800; margin-left: 6px;">(${q.keyword})</span>
+            </div>
+
+            <div class="transform-answer-row">
+                <span style="font-weight: 700; color: var(--text-primary); font-size: 1rem;">⇨ ${q.prefix}</span>
+                <input type="text" class="transform-input" id="input-${q.id}" 
+                       value="${userAns}"
+                       placeholder="Nhập phần viết tiếp vào đây..." 
+                       oninput="handleTransformInput('${q.id}', this.value)"
+                       onkeypress="if(event.key==='Enter') checkSingleTransform('${q.id}')">
+                <button class="action-btn" style="padding: 11px 18px; font-weight: 700;" onclick="checkSingleTransform('${q.id}')">
+                    Kiểm tra
+                </button>
+                <button class="action-btn" style="padding: 11px 14px;" onclick="revealSingleTransform('${q.id}')" title="Xem gợi ý đáp án">
+                    👁️
+                </button>
+            </div>
+
+            <div class="explanation-box" id="explanation-${q.id}">
+                <div>✅ <b>Đáp án chuẩn:</b> <span style="color: var(--primary); font-weight: 700;">${q.prefix} ${q.answer}</span></div>
+                <div style="margin-top: 6px;">💡 <b>Giải thích:</b> ${q.explanation}</div>
+            </div>
+        </div>
+    `;
+}
+
+function normalizeText(text) {
+    return (text || '').toLowerCase()
+               .replace(/\s+/g, ' ')
+               .replace(/[.,!?;:'"]/g, '')
+               .trim();
+}
+
+function handleTransformInput(qId, value) {
+    AppState.answers[qId] = value;
+    const dot = document.getElementById(`nav-dot-${qId}`);
+    if (dot) {
+        if (value.trim()) dot.classList.add('answered');
+        else dot.classList.remove('answered');
+    }
+    const totalCount = Object.keys(document.querySelectorAll('.question-card')).length;
+    updateProgressBar(totalCount);
+}
+
+function checkSingleTransform(qId) {
+    const q = findQuestionById(qId);
+    if (!q) return;
+
+    const input = document.getElementById(`input-${qId}`);
+    const userVal = (input ? input.value : (AppState.answers[qId] || '')).trim();
+    if (!userVal) {
+        showToast('Vui lòng nhập câu trả lời trước khi kiểm tra!', '⚠️');
+        return;
+    }
+
+    const fullUser = (q.prefix + ' ' + userVal).trim();
+    const isCorrect = normalizeText(fullUser) === normalizeText(q.fullAnswer) || 
+                      normalizeText(userVal) === normalizeText(q.answer);
+
+    const expBox = document.getElementById(`explanation-${qId}`);
+    const dot = document.getElementById(`nav-dot-${qId}`);
+
+    if (isCorrect) {
+        soundFX.playCorrect();
+        if (input) {
+            input.style.borderColor = 'var(--success)';
+            input.style.backgroundColor = 'var(--success-bg)';
+        }
+        if (dot) {
+            dot.className = 'nav-dot correct';
+        }
+        showToast(`Câu ${q.num || qId}: Chính xác! 🎉`, '✅');
+    } else {
+        soundFX.playIncorrect();
+        if (input) {
+            input.style.borderColor = 'var(--error)';
+            input.style.backgroundColor = 'var(--error-bg)';
+        }
+        if (dot) {
+            dot.className = 'nav-dot incorrect';
+        }
+        showToast(`Câu ${q.num || qId}: Chưa chính xác, hãy xem đáp án nhé!`, '❌');
+    }
+
+    if (expBox) expBox.classList.add('show');
+}
+
+function revealSingleTransform(qId) {
+    const q = findQuestionById(qId);
+    if (!q) return;
+    const input = document.getElementById(`input-${qId}`);
+    if (input) {
+        input.value = q.answer;
+        input.style.borderColor = 'var(--primary)';
+        input.style.backgroundColor = 'var(--primary-light)';
+    }
+    AppState.answers[qId] = q.answer;
+    const expBox = document.getElementById(`explanation-${qId}`);
+    if (expBox) expBox.classList.add('show');
+    const dot = document.getElementById(`nav-dot-${qId}`);
+    if (dot) dot.classList.add('answered');
 }
 
 function renderSingleQuestion(q) {
@@ -872,24 +1187,34 @@ function updateTimerDisplay() {
 
 // Full Exam Simulation
 function openExamSimulation() {
+    stopListeningAudio();
     const examQuestions = [];
 
     const modGrammar = COURSE_DATA.modules.find(m => m.id === 'grammar-vocab');
-    if (modGrammar) examQuestions.push(...modGrammar.questions.slice(0, 8));
+    if (modGrammar) examQuestions.push(...modGrammar.questions.slice(0, 5));
 
     const modSigns = COURSE_DATA.modules.find(m => m.id === 'signs-notices');
-    if (modSigns) examQuestions.push(...modSigns.questions.slice(0, 5));
+    if (modSigns) examQuestions.push(...modSigns.questions.slice(0, 4));
 
     const modCloze = COURSE_DATA.modules.find(m => m.id === 'cloze-test');
-    if (modCloze) examQuestions.push(...modCloze.questions.slice(0, 5));
+    if (modCloze) examQuestions.push(...modCloze.questions.slice(0, 4));
+
+    const modReading = COURSE_DATA.modules.find(m => m.id === 'reading-comp');
+    if (modReading && modReading.subSections) examQuestions.push(...modReading.subSections[0].questions.slice(0, 3));
+
+    const modTransform = COURSE_DATA.modules.find(m => m.id === 'sentence-transform');
+    if (modTransform) examQuestions.push(...modTransform.questions.slice(0, 4));
+
+    const modListening = COURSE_DATA.modules.find(m => m.id === 'listening-comp');
+    if (modListening && modListening.subSections) examQuestions.push(...modListening.subSections[0].questions.slice(0, 4));
 
     const mockExam = {
         id: 'full-mock-exam',
-        title: 'BÀI THI THỬ TỔNG HỢP (MOCK EXAM 2026)',
-        subtitle: 'Thời gian làm bài: 25 phút • Đánh giá năng lực toàn diện',
+        title: 'BÀI THI THỬ TỔNG HỢP (MOCK EXAM B1 FULL)',
+        subtitle: 'Thời gian làm bài: 35 phút • Đánh giá năng lực 6 chuyên đề',
         category: 'Đề Thi Thử',
-        badge: '18 Câu hỏi',
-        description: 'Đề thi tổng hợp đầy đủ các phần: Ngữ pháp, Biển báo, Điền từ và Đọc hiểu.',
+        badge: '24 Câu hỏi',
+        description: 'Đề thi tổng hợp đầy đủ các phần: Ngữ pháp, Biển báo, Điền từ, Đọc hiểu, Viết lại câu và Nghe hiểu.',
         questions: examQuestions
     };
 
@@ -913,6 +1238,7 @@ function openExamSimulation() {
 
 function submitQuiz() {
     stopTimer();
+    stopListeningAudio();
     AppState.submitted = true;
 
     const mod = COURSE_DATA.modules.find(m => m.id === AppState.currentModuleId);
@@ -928,43 +1254,62 @@ function submitQuiz() {
     let correctCount = 0;
     allQuestions.forEach(q => {
         const userAns = AppState.answers[q.id];
-        const isCorrect = userAns === q.correct;
-        if (isCorrect) correctCount++;
-
-        // Reveal visual cues
-        const targetOpt = document.getElementById(`opt-${q.id}-${userAns}`);
-        const correctOpt = document.getElementById(`opt-${q.id}-${q.correct}`);
-        const expBox = document.getElementById(`explanation-${q.id}`);
         const dot = document.getElementById(`nav-dot-${q.id}`);
+        const expBox = document.getElementById(`explanation-${q.id}`);
 
-        if (correctOpt) {
-            correctOpt.classList.add('correct');
-            const icon = correctOpt.querySelector('.option-status-icon');
-            if (icon) icon.innerText = '✓';
-        }
-        if (userAns !== undefined && !isCorrect && targetOpt) {
-            targetOpt.classList.add('incorrect');
-            const icon = targetOpt.querySelector('.option-status-icon');
-            if (icon) icon.innerText = '✕';
-        }
+        if (q.fullAnswer) {
+            // Sentence transformation question
+            const userVal = (userAns || '').trim();
+            const fullUser = (q.prefix + ' ' + userVal).trim();
+            const isCorrect = userVal && (normalizeText(fullUser) === normalizeText(q.fullAnswer) || normalizeText(userVal) === normalizeText(q.answer));
+            if (isCorrect) correctCount++;
 
-        if (dot) {
-            dot.className = `nav-dot ${isCorrect ? 'correct' : 'incorrect'}`;
-        }
+            const input = document.getElementById(`input-${q.id}`);
+            if (input) {
+                input.style.borderColor = isCorrect ? 'var(--success)' : 'var(--error)';
+                input.style.backgroundColor = isCorrect ? 'var(--success-bg)' : 'var(--error-bg)';
+            }
+            if (dot) {
+                dot.className = `nav-dot ${isCorrect ? 'correct' : 'incorrect'}`;
+            }
+        } else {
+            // Multiple Choice Question
+            const isCorrect = userAns === q.correct;
+            if (isCorrect) correctCount++;
 
-        // Color blanks in cloze passage
-        if (q.blankNum) {
-            const blank = document.querySelector(`.cloze-blank[data-blank="${q.blankNum}"]`);
-            if (blank) {
-                if (isCorrect) {
-                    blank.innerHTML = `(${q.blankNum}) <u>${q.options[q.correct]}</u>`;
-                    blank.style.background = 'var(--success)';
-                    blank.style.color = 'white';
-                } else {
-                    const userWord = userAns !== undefined ? q.options[userAns] : '...';
-                    blank.innerHTML = `(${q.blankNum}) <s style="opacity:0.8;">${userWord}</s> <b>${q.options[q.correct]}</b>`;
-                    blank.style.background = 'var(--error)';
-                    blank.style.color = 'white';
+            // Reveal visual cues
+            const targetOpt = document.getElementById(`opt-${q.id}-${userAns}`);
+            const correctOpt = document.getElementById(`opt-${q.id}-${q.correct}`);
+
+            if (correctOpt) {
+                correctOpt.classList.add('correct');
+                const icon = correctOpt.querySelector('.option-status-icon');
+                if (icon) icon.innerText = '✓';
+            }
+            if (userAns !== undefined && !isCorrect && targetOpt) {
+                targetOpt.classList.add('incorrect');
+                const icon = targetOpt.querySelector('.option-status-icon');
+                if (icon) icon.innerText = '✕';
+            }
+
+            if (dot) {
+                dot.className = `nav-dot ${isCorrect ? 'correct' : 'incorrect'}`;
+            }
+
+            // Color blanks in cloze passage
+            if (q.blankNum) {
+                const blank = document.querySelector(`.cloze-blank[data-blank="${q.blankNum}"]`);
+                if (blank) {
+                    if (isCorrect) {
+                        blank.innerHTML = `(${q.blankNum}) <u>${q.options[q.correct]}</u>`;
+                        blank.style.background = 'var(--success)';
+                        blank.style.color = 'white';
+                    } else {
+                        const userWord = userAns !== undefined ? q.options[userAns] : '...';
+                        blank.innerHTML = `(${q.blankNum}) <s style="opacity:0.8;">${userWord}</s> <b>${q.options[q.correct]}</b>`;
+                        blank.style.background = 'var(--error)';
+                        blank.style.color = 'white';
+                    }
                 }
             }
         }

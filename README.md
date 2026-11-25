@@ -6,11 +6,13 @@
 
 ## 🌟 Tính Năng Nổi Bật
 
-- **4 Chuyên Đề Trọng Tâm**:
+- **6 Chuyên Đề Khảo Thí Trọng Tâm**:
   1. 📝 **Ngữ Pháp & Từ Vựng Cốt Lõi (Câu 101 - 120)**: Các cấu trúc câu thường gặp: `to V / V-ing`, thể sai khiến (`have sth done`), động từ khuyết thiếu quá khứ (`should/must/may have + V3`), cụm thành ngữ cố định (Collocations).
   2. 🪧 **Đọc Hiểu Biển Báo & Thông Báo (Signs & Notices)**: Phân tích 10 biển báo thực tế nơi công cộng, siêu thị, nhà ga, trường học.
   3. 🕳️ **Đoạn Văn Đục Lỗ (Cloze Test - Wollemi Cave Discovery)**: Khảo cổ học hang động Úc. Giao diện chia đôi màn hình (*Split View*), hỗ trợ điền từ trực tiếp vào văn bản theo thời gian thực.
   4. 📖 **Đọc Hiểu Chuyên Sâu (Reading Texts)**: 2 bài báo về Madonna (*Giving Back to the People*) và ca sĩ Paul Staples (*How to Follow Your Dreams*).
+  5. ✍️ **Biến Đổi Câu (Sentence Transformation - Câu 21 – 30)**: Luyện viết lại câu không đổi nghĩa dùng từ gợi ý, kiểm tra chuẩn xác theo thời gian thực.
+  6. 🎧 **Luyện Nghe Hiểu (Listening Comprehension - Text 32, 35, 56, 68)**: 20 câu hỏi luyện nghe trắc nghiệm & True/False, tích hợp trình phát Audio giọng bản xứ (Web Speech API) và transcript song ngữ.
 
 - **2 Chế Độ Học Linh Hoạt**:
   - **💡 Luyện Tập Tự Do (Practice Mode)**: Chọn đáp án nhận ngay phản hồi âm thanh (đúng/sai) và hiển thị hộp giải thích ngữ pháp chi tiết.

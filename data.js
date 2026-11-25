@@ -597,6 +597,356 @@ The paintings show people and animals, <span class="cloze-blank" data-blank="8" 
                     ]
                 }
             ]
+        },
+        {
+            id: 'sentence-transform',
+            title: 'Biến Đổi Câu - Viết Lại Câu Không Đổi Nghĩa',
+            subtitle: 'Sentence Transformation Exercises (Câu 21 – 30)',
+            icon: 'edit-3',
+            category: 'Kỹ Năng Viết',
+            duration: '20 phút',
+            description: 'Luyện tập kỹ năng viết lại câu sao cho nghĩa không đổi sử dụng từ khóa gợi ý (Key Word Transformation) - dạng bài kinh điển trong các đề thi B1, PET, VSTEP.',
+            badge: '10 Câu hỏi',
+            type: 'transform',
+            questions: [
+                {
+                    id: 21,
+                    num: 21,
+                    original: "I don't agree with your opinion of the new shopping center.",
+                    highlight: "don't agree with your opinion",
+                    keyword: "wrong",
+                    prefix: "I think you",
+                    answer: "are wrong about the new shopping center.",
+                    fullAnswer: "I think you are wrong about the new shopping center.",
+                    explanation: "Cấu trúc: <b>be wrong about sth</b> (nhận định sai / không đúng về điều gì) tương đương với <i>don't agree with your opinion</i>."
+                },
+                {
+                    id: 22,
+                    num: 22,
+                    original: "It's not necessary to pay to use the office phone.",
+                    highlight: "not necessary",
+                    keyword: "have",
+                    prefix: "You don't",
+                    answer: "have to pay to use the office phone.",
+                    fullAnswer: "You don't have to pay to use the office phone.",
+                    explanation: "Cấu trúc: <b>don't have to V</b> (không cần phải làm gì) tương đương với <i>It's not necessary to V</i>."
+                },
+                {
+                    id: 23,
+                    num: 23,
+                    original: "It wasn't necessary for me to buy a stamp for my letter.",
+                    highlight: "wasn't necessary",
+                    keyword: "need",
+                    prefix: "I didn't",
+                    answer: "need to buy a stamp for my letter.",
+                    fullAnswer: "I didn't need to buy a stamp for my letter.",
+                    explanation: "Cấu trúc quá khứ: <b>didn't need to V</b> (không cần thiết phải làm gì trong quá khứ) tương đương với <i>It wasn't necessary for sb to V</i>."
+                },
+                {
+                    id: 24,
+                    num: 24,
+                    original: "It's possible that the e-mail is from Alex.",
+                    highlight: "It's possible",
+                    keyword: "might",
+                    prefix: "The e-mail",
+                    answer: "might come from Alex.",
+                    fullAnswer: "The e-mail might come from Alex.",
+                    explanation: "Động từ khuyết thiếu: <b>might + V</b> (có thể / có khả năng) dùng để diễn tả phỏng đoán không chắc chắn thay cho <i>It's possible that...</i>."
+                },
+                {
+                    id: 25,
+                    num: 25,
+                    original: "My computer doesn't work, so I can't e-mail you.",
+                    highlight: "doesn't work",
+                    keyword: "wrong",
+                    prefix: "There's something",
+                    answer: "wrong with my computer, so I can't e-mail you.",
+                    fullAnswer: "There's something wrong with my computer, so I can't e-mail you.",
+                    explanation: "Thành ngữ: <b>There is something wrong with sth</b> (có vấn đề trục trặc / hỏng hóc với cái gì) tương đương với <i>sth doesn't work</i>."
+                },
+                {
+                    id: 26,
+                    num: 26,
+                    original: "Did you mention the plans for this weekend to Matt?",
+                    highlight: "mention",
+                    keyword: "talk",
+                    prefix: "Did you",
+                    answer: "talk to Matt about the plans for this weekend?",
+                    fullAnswer: "Did you talk to Matt about the plans for this weekend?",
+                    explanation: "Cụm động từ: <b>talk to sb about sth</b> (nói chuyện / thảo luận với ai về điều gì) tương đương với <i>mention sth to sb</i>."
+                },
+                {
+                    id: 27,
+                    num: 27,
+                    original: "I think we should build a new theatre in town.",
+                    highlight: "should build",
+                    keyword: "favor",
+                    prefix: "I'm in",
+                    answer: "favor of building a new theatre in town.",
+                    fullAnswer: "I'm in favor of building a new theatre in town.",
+                    explanation: "Cấu trúc: <b>be in favor of + V-ing</b> (hoàn toàn ủng hộ / đồng tình với việc gì) tương đương với <i>think we should V</i>."
+                },
+                {
+                    id: 28,
+                    num: 28,
+                    original: "You lost Jill's camera and I think you should say sorry.",
+                    highlight: "say sorry",
+                    keyword: "apologize",
+                    prefix: "I think you should",
+                    answer: "apologize to Jill for losing her camera.",
+                    fullAnswer: "I think you should apologize to Jill for losing her camera.",
+                    explanation: "Cấu trúc: <b>apologize to sb for (doing) sth</b> (xin lỗi ai vì đã làm gì) thay thế cho <i>say sorry to sb</i>."
+                },
+                {
+                    id: 29,
+                    num: 29,
+                    original: "Have you ever participated in a swimming race?",
+                    highlight: "participated",
+                    keyword: "part",
+                    prefix: "Have you ever",
+                    answer: "taken part in a swimming race?",
+                    fullAnswer: "Have you ever taken part in a swimming race?",
+                    explanation: "Cụm thành ngữ: <b>take part in sth</b> (= participate in sth: tham gia vào). Ở thì Hiện tại hoàn thành (Have you ever...) dùng <b>taken part in</b>."
+                },
+                {
+                    id: 30,
+                    num: 30,
+                    original: "Please play your electric guitar more quietly!",
+                    highlight: "play ... more quietly",
+                    keyword: "down",
+                    prefix: "Please",
+                    answer: "turn down your electric guitar!",
+                    fullAnswer: "Please turn down your electric guitar!",
+                    explanation: "Cụm phrasal verb: <b>turn down sth</b> (vặn nhỏ âm lượng) thay thế cho <i>play/listen more quietly</i>."
+                }
+            ]
+        },
+        {
+            id: 'listening-comp',
+            title: 'Luyện Nghe Hiểu - Listening Comprehension',
+            subtitle: 'Listening Exercises (Text 32, 35, 56, 68)',
+            icon: 'headphones',
+            category: 'Kỹ Năng Nghe',
+            duration: '25 phút',
+            description: 'Luyện nghe giọng chuẩn bản xứ qua 4 bài hội thoại & độc thoại thực tế. Tích hợp trình phát âm thanh thông minh, chỉnh tốc độ đọc và transcript lời thoại song ngữ.',
+            badge: '20 Câu hỏi (4 Phần)',
+            type: 'listening',
+            subSections: [
+                {
+                    id: 'text-32',
+                    title: 'TEXT 32: A PHONE CALL MESSAGE',
+                    description: 'Nghe cuộc gọi điện thoại và chọn đáp án đúng nhất (A, B hoặc C)',
+                    transcript: `Man: Hello, could I speak to Mr. Davis, please?
+Girl: I'm sorry, my father can't come to the telephone right now. He's busy. Can I take a message?
+Man: Yes, please. This is Nick. Could you tell him that I called?
+Girl: Sure, Nick. Does he have your phone number?
+Man: Yes, but just in case, it's 589-7248. That's 5-8-9, 7-2-4-8.
+Girl: Got it. And what should I tell him?
+Man: Just ask your father to call me back later when he's free. By the way, what's your name, young lady?
+Girl: I'm not supposed to tell strangers my name, sir.
+Man: Haha, good girl! That's very smart. Thanks for your help. Goodbye!`,
+                    transcriptVi: `Người đàn ông: Xin chào, tôi có thể nói chuyện với ông Davis được không?
+Bé gái: Cháu xin lỗi, bố cháu hiện không thể nghe điện thoại được. Bố đang bận. Cháu có thể ghi lại lời nhắn không ạ?
+Người đàn ông: Được chứ, cảm ơn cháu. Chú là Nick. Cháu nhắn giúp là chú có gọi nhé?
+Bé gái: Dạ vâng, chú Nick. Bố cháu có số của chú chưa ạ?
+Người đàn ông: Có rồi, nhưng phòng khi bố quên thì số chú là 589-7248. Đó là 5-8-9, 7-2-4-8.
+Bé gái: Cháu ghi lại rồi ạ. Chú cần nhắn bố cháu điều gì nữa không?
+Người đàn ông: Chỉ cần bảo bố gọi lại cho chú khi rảnh nhé. Tiện thể, cháu tên là gì thế cô bé?
+Bé gái: Mẹ cháu dặn là không được nói tên cho người lạ biết ạ.
+Người đàn ông: Haha, cô bé ngoan lắm! Rất thông minh. Cảm ơn cháu nhiều nhé. Tạm biệt!`,
+                    questions: [
+                        {
+                            id: '32-1',
+                            text: "1. What is the name of the caller?",
+                            options: ["Nick", "Nate", "Neil"],
+                            correct: 0,
+                            explanation: "Người gọi giới thiệu: <i>'This is Nick. Could you tell him that I called?'</i> &rarr; Tên người gọi là Nick."
+                        },
+                        {
+                            id: '32-2',
+                            text: "2. According to the girl, her father:",
+                            options: ["is not home.", "is on another line.", "can't come to the telephone."],
+                            correct: 2,
+                            explanation: "Cô bé trả lời: <i>'my father can't come to the telephone right now.'</i> &rarr; Bố cô bé không thể nghe điện thoại lúc này."
+                        },
+                        {
+                            id: '32-3',
+                            text: "3. What is the man's telephone number?",
+                            options: ["598-7482", "587-4728", "589-7248"],
+                            correct: 2,
+                            explanation: "Người đàn ông đọc số điện thoại: <i>'it's 589-7248. That's 5-8-9, 7-2-4-8.'</i>"
+                        },
+                        {
+                            id: '32-4',
+                            text: "4. The man tells the girl:",
+                            options: [
+                                "that he will call again sometime after 7:00 PM.",
+                                "to ask her father to call him later.",
+                                "that he will drop by around 8:30 PM."
+                            ],
+                            correct: 1,
+                            explanation: "Người đàn ông dặn: <i>'Just ask your father to call me back later when he's free.'</i> &rarr; Bảo bố gọi lại cho chú sau."
+                        },
+                        {
+                            id: '32-5',
+                            text: "5. What does the girl refuse to tell the caller?",
+                            options: ["Her age", "Her name", "Her address"],
+                            correct: 1,
+                            explanation: "Cô bé từ chối nói tên: <i>'I'm not supposed to tell strangers my name, sir.'</i>"
+                        }
+                    ]
+                },
+                {
+                    id: 'text-35',
+                    title: 'TEXT 35: PACKING FOR FOUR SEASONS',
+                    description: 'Nghe đoạn hội thoại về chuẩn bị trang phục cho các mùa và chọn đáp án đúng nhất (A, B hoặc C)',
+                    transcript: `Woman: Are you packing for your trip abroad?
+Man: Yes, I need to pack clothes for all four seasons! For the summer months, I'm taking casual shoes and sandals, and short-sleeved shirts.
+Woman: What about winter? It gets freezing there!
+Man: Well, I'm packing some thick sweaters and a warm jacket. But I'm NOT going to pack a heavy coat because my brother already has an extra coat at his apartment for me.
+Woman: Good idea. And spring?
+Man: People say spring is very rainy, so I'll definitely bring an umbrella and waterproof boots.
+Woman: Will you need formal clothes?
+Man: Yes, I'm attending a formal wedding ceremony, so I'll need a nice suit and tie. I remember at my high school graduation, I just wore jeans and tennis shoes, but I can't do that at a wedding!`,
+                    transcriptVi: `Người phụ nữ: Anh đang sắp xếp hành lý cho chuyến đi nước ngoài à?
+Người đàn ông: Đúng vậy, tôi cần chuẩn bị quần áo cho cả bốn mùa! Cho những tháng mùa hè, tôi mang giày thường (casual shoes), dép xăng đan và áo ngắn tay.
+Người phụ nữ: Thế còn mùa đông? Ở đó trời rét cóng đấy!
+Người đàn ông: Tôi sẽ mang một số áo len dày và áo khoác jacket. Nhưng tôi sẽ KHÔNG mang áo khoác măng-tô dày (coat) vì anh trai tôi đã có sẵn một chiếc ở căn hộ cho tôi rồi.
+Người phụ nữ: Ý hay đấy. Còn mùa xuân thì sao?
+Người đàn ông: Mọi người bảo mùa xuân mưa nhiều, nên tôi chắc chắn sẽ mang theo ô và ủng chống nước.
+Người phụ nữ: Anh có cần quần áo trang trọng không?
+Người đàn ông: Có, tôi sẽ tham dự một đám cưới trang trọng, nên cần một bộ âu phục chỉnh tề (suit) và cà vạt. Tôi nhớ hồi tốt nghiệp cấp ba, tôi chỉ mặc quần jean và giày tennis, nhưng đám cưới thì không thể mặc như thế được!`,
+                    questions: [
+                        {
+                            id: '35-1',
+                            text: "1. What does the man plan to wear during the summer months?",
+                            options: ["A cool hat", "Casual shoes", "Light pants"],
+                            correct: 1,
+                            explanation: "Đoạn thoại: <i>'For the summer months, I'm taking casual shoes and sandals...'</i> &rarr; Đáp án đúng là B (Casual shoes)."
+                        },
+                        {
+                            id: '35-2',
+                            text: "2. What is one thing the man is NOT going to pack for the winter season?",
+                            options: ["A coat", "Some sweaters", "A jacket"],
+                            correct: 0,
+                            explanation: "Người đàn ông nói rõ: <i>'But I'm NOT going to pack a heavy coat because my brother already has an extra coat...'</i> &rarr; Không mang coat."
+                        },
+                        {
+                            id: '35-3',
+                            text: "3. What is the weather like in the spring?",
+                            options: ["It's windy.", "It's rainy.", "It's cool."],
+                            correct: 1,
+                            explanation: "Đoạn thoại: <i>'People say spring is very rainy, so I'll definitely bring an umbrella...'</i> &rarr; Thời tiết mùa xuân có nhiều mưa (rainy)."
+                        },
+                        {
+                            id: '35-4',
+                            text: "4. What is an example of an occasion where the man might need formal clothes?",
+                            options: ["A party", "A business meeting", "A wedding"],
+                            correct: 2,
+                            explanation: "Người đàn ông nói: <i>'Yes, I'm attending a formal wedding ceremony, so I'll need a nice suit and tie.'</i> &rarr; Đi đám cưới (A wedding)."
+                        },
+                        {
+                            id: '35-5',
+                            text: "5. What did the man wear to his high school graduation?",
+                            options: ["Jeans and tennis shoes", "A casual shirt and tie", "A suit and dress shoes"],
+                            correct: 0,
+                            explanation: "Đoạn thoại: <i>'I remember at my high school graduation, I just wore jeans and tennis shoes...'</i> &rarr; Quần jean và giày thể thao."
+                        }
+                    ]
+                },
+                {
+                    id: 'text-56',
+                    title: 'TEXT 56: VITAMIN D & SUNSHINE',
+                    description: 'Nghe bài giảng của giáo sư về Vitamin D và xác định các nhận định sau là Đúng (True) hay Sai (False)',
+                    transcript: `Professor: Good morning, class. Today, we're going to discuss the importance of getting vitamin D from sunshine as a crucial aspect of human health. Many people think that diet alone provides all our nutrients, but the main point I want to emphasize is that to get enough vitamin D, we truly need sunshine. When ultraviolet rays from sunlight strike our skin, our body produces vitamin D3.
+Now, what happens if we don't get enough? Without adequate vitamin D, our bodies cannot absorb calcium properly, and we may develop weak and soft bones, leading to conditions like rickets in children. We will not develop strong bones and teeth without it. However, moderation is key. You must protect yourself because excessive exposure and too much sunshine can damage skin cells and cause skin cancer. So, 10 to 15 minutes of sun exposure a few times a week is generally recommended.`,
+                    transcriptVi: `Giáo sư: Chào cả lớp. Hôm nay chúng ta sẽ thảo luận về tầm quan trọng của việc hấp thụ vitamin D từ ánh nắng mặt trời như một khía cạnh thiết yếu của sức khỏe con người. Nhiều người nghĩ chế độ ăn uống là đủ chất dinh dưỡng, nhưng điểm cốt lõi tôi muốn nhấn mạnh là để có đủ vitamin D, chúng ta thực sự cần ánh nắng mặt trời. Khi tia cực tím từ ánh nắng tiếp xúc với da, cơ thể chúng ta sẽ tổng hợp vitamin D3.
+Điều gì xảy ra nếu chúng ta không có đủ vitamin D? Không có đủ vitamin D, cơ thể không thể hấp thụ canxi đúng cách, và xương của chúng ta sẽ trở nên yếu và mềm, dẫn tới bệnh còi xương ở trẻ em. Chúng ta không thể phát triển xương và răng chắc khỏe nếu thiếu nó. Tuy nhiên, sự điều độ là chìa khóa. Các bạn cần bảo vệ cơ thể vì tiếp xúc quá nhiều với ánh nắng gắt có thể gây tổn thương tế bào da và dẫn tới ung thư da. Vì vậy, chỉ nên phơi nắng từ 10 đến 15 phút vài lần mỗi tuần.`,
+                    questions: [
+                        {
+                            id: '56-1',
+                            text: "1. The professor mainly discusses the importance of getting vitamin D from sunshine as an aspect of health.",
+                            options: ["True", "False"],
+                            correct: 0,
+                            explanation: "Giáo sư mở đầu: <i>'Today, we're going to discuss the importance of getting vitamin D from sunshine as a crucial aspect of human health.'</i> &rarr; Đúng (True)."
+                        },
+                        {
+                            id: '56-2',
+                            text: "2. The speaker's main point is to get enough vitamin D, we need sunshine.",
+                            options: ["True", "False"],
+                            correct: 0,
+                            explanation: "Giáo sư khẳng định: <i>'the main point I want to emphasize is that to get enough vitamin D, we truly need sunshine.'</i> &rarr; Đúng (True)."
+                        },
+                        {
+                            id: '56-3',
+                            text: "3. The professor emphasizes her point about getting enough vitamin D by showing what happens when we're in the sun.",
+                            options: ["True", "False"],
+                            correct: 1,
+                            explanation: "Giáo sư nhấn mạnh bằng cách phân tích những gì xảy ra khi chúng ta KHÔNG có đủ vitamin D (<i>'Now, what happens if we don't get enough? Without adequate vitamin D...'</i>) chứ không phải khi ở ngoài nắng &rarr; Sai (False)."
+                        },
+                        {
+                            id: '56-4',
+                            text: "4. Without Vitamin D, we may develop strong bones and teeth.",
+                            options: ["True", "False"],
+                            correct: 1,
+                            explanation: "Bài giảng nêu: thiếu vitamin D thì xương sẽ yếu và mềm (weak and soft bones), không thể phát triển răng và xương chắc khỏe được &rarr; Sai (False)."
+                        },
+                        {
+                            id: '56-5',
+                            text: "5. Too much sunshine can cause skin cancer.",
+                            options: ["True", "False"],
+                            correct: 0,
+                            explanation: "Bài giảng nêu rõ: <i>'excessive exposure and too much sunshine can damage skin cells and cause skin cancer.'</i> &rarr; Đúng (True)."
+                        }
+                    ]
+                },
+                {
+                    id: 'text-68',
+                    title: 'TEXT 68: JIM ALLEN\'S LIFE STORY',
+                    description: 'Nghe câu chuyện về cuộc đời của Jim Allen và chọn True (Đúng) hoặc False (Sai)',
+                    transcript: `Jim Allen: My name is Jim Allen. I was born and raised in a quiet suburb just outside Toronto, Canada, not in the city center. I had a wonderful wife, Mary, but sadly she passed away twenty years ago, not ten. Since my children grew up and moved out, I have been living on my own.
+As for my career, I left school at the age of fifteen because my family needed money, and I started working in a local paper factory. I worked there for nearly fifty years! Until last year, I worked every weekday in that paper factory, but now I am happily retired. A lot of my friends moved down south to warmer countries like Argentina or Spain, but I still live right here in Canada, enjoying my retirement and gardening.`,
+                    transcriptVi: `Jim Allen: Tôi tên là Jim Allen. Tôi sinh ra và lớn lên ở một vùng ngoại ô yên tĩnh ngay ngoài rìa Toronto, Canada, chứ không phải ở trung tâm thành phố. Tôi từng có một người vợ tuyệt vời, Mary, nhưng tiếc là bà ấy đã qua đời cách đây 20 năm, chứ không phải 10 năm. Kể từ khi các con trưởng thành và dọn ra ở riêng, tôi sống một mình.
+Về sự nghiệp, tôi rời ghế nhà trường từ năm 15 tuổi vì gia đình cần tiền, và tôi bắt đầu làm việc tại một nhà máy sản xuất giấy ở địa phương. Tôi đã làm việc ở đó gần 50 năm! Cho đến tận năm ngoái, tôi vẫn làm việc đều đặn các ngày trong tuần ở nhà máy đó, nhưng giờ thì tôi đã chính thức nghỉ hưu an nhàn. Nhiều bạn bè của tôi đã chuyển về phương nam tới những xứ ấm hơn như Argentina hay Tây Ban Nha, nhưng tôi thì vẫn sống tại Canada này, tận hưởng tuổi già và chăm sóc vườn tược.`,
+                    questions: [
+                        {
+                            id: '68-1',
+                            text: "1. Jim Allen lives in the center of Toronto.",
+                            options: ["True", "False"],
+                            correct: 1,
+                            explanation: "Jim Allen nói: <i>'in a quiet suburb just outside Toronto, Canada, not in the city center.'</i> &rarr; Ông sống ở ngoại ô, không phải trung tâm &rarr; Sai (False)."
+                        },
+                        {
+                            id: '68-2',
+                            text: "2. His wife died ten years ago, so now he lives alone.",
+                            options: ["True", "False"],
+                            correct: 1,
+                            explanation: "Jim Allen đính chính: vợ ông mất 20 năm trước (<i>'twenty years ago, not ten'</i>) &rarr; Sai (False)."
+                        },
+                        {
+                            id: '68-3',
+                            text: "3. Until last year, he worked in a paper factory, but now he is retired.",
+                            options: ["True", "False"],
+                            correct: 0,
+                            explanation: "Đoạn thoại: <i>'Until last year, I worked every weekday in that paper factory, but now I am happily retired.'</i> &rarr; Đúng (True)."
+                        },
+                        {
+                            id: '68-4',
+                            text: "4. He left school when he was 15 and started work in the factory.",
+                            options: ["True", "False"],
+                            correct: 0,
+                            explanation: "Jim Allen kể: <i>'I left school at the age of fifteen because my family needed money, and I started working in a local paper factory.'</i> &rarr; Đúng (True)."
+                        },
+                        {
+                            id: '68-5',
+                            text: "5. Now he is living in Argentina.",
+                            options: ["True", "False"],
+                            correct: 1,
+                            explanation: "Jim Allen khẳng định bạn bè ông mới chuyển tới Argentina, còn ông vẫn ở Canada (<i>'A lot of my friends moved down south to warmer countries like Argentina... but I still live right here in Canada'</i>) &rarr; Sai (False)."
+                        }
+                    ]
+                }
+            ]
         }
     ],
 
@@ -681,6 +1031,46 @@ The paintings show people and animals, <span class="cloze-blank" data-blank="8" 
             front: "keep secret",
             back: "Giữ kín bí mật",
             example: "The exact location must be kept secret."
+        },
+        {
+            front: "be wrong about sth",
+            back: "Sai lầm / nhận định không đúng về cái gì (= don't agree with opinion)",
+            example: "I think you are wrong about the new shopping center."
+        },
+        {
+            front: "don't have to + V",
+            back: "Không cần phải làm gì (= It is not necessary to V)",
+            example: "You don't have to pay to use the office phone."
+        },
+        {
+            front: "didn't need to + V",
+            back: "Không cần thiết phải làm gì trong quá khứ (= It was not necessary to V)",
+            example: "I didn't need to buy a stamp for my letter."
+        },
+        {
+            front: "There is something wrong with sth",
+            back: "Có trục trặc, vấn đề gì hỏng hóc với cái gì (= sth doesn't work)",
+            example: "There's something wrong with my computer."
+        },
+        {
+            front: "be in favor of + V-ing",
+            back: "Ủng hộ, tán thành việc gì (= support / think we should do sth)",
+            example: "I'm in favor of building a new theatre in town."
+        },
+        {
+            front: "apologize to sb for V-ing",
+            back: "Xin lỗi ai vì đã làm điều gì (= say sorry to sb for)",
+            example: "You should apologize to Jill for losing her camera."
+        },
+        {
+            front: "take part in sth",
+            back: "Tham gia vào việc gì (= participate in sth)",
+            example: "Have you ever taken part in a swimming race?"
+        },
+        {
+            front: "turn down sth",
+            back: "Vặn nhỏ âm lượng lại / Từ chối lời mời (= play more quietly)",
+            example: "Please turn down your electric guitar!"
         }
     ]
 };

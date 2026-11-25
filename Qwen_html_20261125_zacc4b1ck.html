@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Chuyển Đổi Câu - Sentence Transformation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-check {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-check:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .btn-reveal {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-reveal:hover {
+            background: #1976D2;
+            transform: translateY(-2px);
+        }
+
+        .btn-reset {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+        }
+
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .question.correct {
+            border-left-color: #4CAF50;
+            background: #e8f5e9;
+        }
+
+        .question.incorrect {
+            border-left-color: #f44336;
+            background: #ffebee;
+        }
+
+        .question-number {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .original-sentence {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
+
+        .original-sentence .highlight {
+            background: #fff176;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .keyword {
+            color: #e91e63;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .answer-line {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .answer-prefix {
+            font-style: italic;
+            color: #555;
+            font-size: 15px;
+            white-space: nowrap;
+        }
+
+        .answer-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .answer-input:focus {
+            border-color: #667eea;
+        }
+
+        .answer-input.correct-input {
+            border-color: #4CAF50;
+            background: #e8f5e9;
+        }
+
+        .answer-input.incorrect-input {
+            border-color: #f44336;
+            background: #ffebee;
+        }
+
+        .correct-answer {
+            display: none;
+            margin-top: 10px;
+            padding: 12px 15px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+            font-size: 15px;
+            color: #1565C0;
+        }
+
+        .correct-answer .answer-text {
+            font-weight: bold;
+            color: #0d47a1;
+        }
+
+        .correct-answer .answer-highlight {
+            background: #81d4fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .result-icon {
+            font-size: 20px;
+            margin-left: 5px;
+        }
+
+        .score-board {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .score-board h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .score-board p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .instructions {
+            background: #fff3e0;
+            border: 1px solid #ffcc80;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: #e65100;
+        }
+
+        .instructions strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .answer-line {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .answer-input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Bài Tập Chuyển Đổi Câu</h1>
+        <p class="subtitle">Sentence Transformation Exercises (21–30)</p>
+
+        <div class="instructions">
+            <strong>📌 Hướng dẫn:</strong>
+            Viết lại câu sao cho nghĩa không đổi, sử dụng từ gợi ý trong ngoặc. 
+            Điền câu trả lời vào ô trống, sau đó nhấn <strong>"Kiểm tra"</strong> để xem kết quả 
+            hoặc <strong>"Xem đáp án"</strong> để xem câu trả lời đúng.
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-check" onclick="checkAnswers()">✅ Kiểm tra</button>
+            <button class="btn btn-reveal" onclick="revealAnswers()">👁️ Xem đáp án</button>
+            <button class="btn btn-reset" onclick="resetAll()">🔄 Làm mới</button>
+        </div>
+
+        <div class="score-board" id="scoreBoard">
+            <h2 id="scoreText"></h2>
+            <p id="scoreDetail"></p>
+        </div>
+
+        <div id="questionsContainer"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                num: 21,
+                original: 'I don\'t agree with your opinion of the new shopping center.',
+                highlight: "don't agree with your opinion",
+                keyword: 'wrong',
+                prefix: 'I think you',
+                answer: 'are wrong about the new shopping center.',
+                fullAnswer: 'I think you are wrong about the new shopping center.'
+            },
+            {
+                num: 22,
+                original: "It's not necessary to pay to use the office phone.",
+                highlight: 'not necessary',
+                keyword: 'have',
+                prefix: "You don't",
+                answer: 'have to pay to use the office phone.',
+                fullAnswer: "You don't have to pay to use the office phone."
+            },
+            {
+                num: 23,
+                original: "It wasn't necessary for me to buy a stamp for my letter.",
+                highlight: "wasn't necessary",
+                keyword: 'need',
+                prefix: "I didn't",
+                answer: 'need to buy a stamp for my letter.',
+                fullAnswer: "I didn't need to buy a stamp for my letter."
+            },
+            {
+                num: 24,
+                original: "It's possible that the e-mail is from Alex.",
+                highlight: "It's possible",
+                keyword: 'might',
+                prefix: 'The e-mail',
+                answer: 'might come from Alex.',
+                fullAnswer: 'The e-mail might come from Alex.'
+            },
+            {
+                num: 25,
+                original: "My computer doesn't work, so I can't e-mail you.",
+                highlight: "doesn't work",
+                keyword: 'wrong',
+                prefix: "There's something",
+                answer: 'wrong with my computer, so I can\'t e-mail you.',
+                fullAnswer: "There's something wrong with my computer, so I can't e-mail you."
+            },
+            {
+                num: 26,
+                original: 'Did you mention the plans for this weekend to Matt?',
+                highlight: 'mention',
+                keyword: 'talk',
+                prefix: 'Did you',
+                answer: 'talk to Matt about the plans for this weekend?',
+                fullAnswer: 'Did you talk to Matt about the plans for this weekend?'
+            },
+            {
+                num: 27,
+                original: 'I think we should build a new theatre in town.',
+                highlight: 'should build',
+                keyword: 'favor',
+                prefix: "I'm in",
+                answer: 'favor of building a new theatre in town.',
+                fullAnswer: "I'm in favor of building a new theatre in town."
+            },
+            {
+                num: 28,
+                original: "You lost Jill's camera and I think you should say sorry.",
+                highlight: 'say sorry',
+                keyword: 'apologize',
+                prefix: 'I think you should',
+                answer: 'apologize to Jill for losing her camera.',
+                fullAnswer: 'I think you should apologize to Jill for losing her camera.'
+            },
+            {
+                num: 29,
+                original: 'Have you ever participated in a swimming race?',
+                highlight: 'participated',
+                keyword: 'part',
+                prefix: 'Have you ever',
+                answer: 'taken part in a swimming race?',
+                fullAnswer: 'Have you ever taken part in a swimming race?'
+            },
+            {
+                num: 30,
+                original: 'Please play your electric guitar more quietly!',
+                highlight: 'play ... more quietly',
+                keyword: 'down',
+                prefix: 'Please',
+                answer: 'turn down your electric guitar!',
+                fullAnswer: 'Please turn down your electric guitar!'
+            }
+        ];
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.className = 'question';
+                div.id = `question-${index}`;
+                div.innerHTML = `
+                    <div class="question-number">Câu ${q.num}</div>
+                    <div class="original-sentence">
+                        ${q.original.replace(
+                            q.highlight.includes('...') ? /play.*quietly/ : new RegExp(q.highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'),
+                            `<span class="highlight">${q.highlight}</span>`
+                        )} 
+                        <span class="keyword">(${q.keyword})</span>
+                    </div>
+                    <div class="answer-line">
+                        <span class="answer-prefix">⇨ ${q.prefix}</span>
+                        <input type="text" class="answer-input" id="input-${index}" 
+                               placeholder="Nhập câu trả lời của bạn..." 
+                               onkeypress="if(event.key==='Enter') checkAnswers()">
+                        <span class="result-icon" id="icon-${index}"></span>
+                    </div>
+                    <div class="correct-answer" id="answer-${index}">
+                        ✅ <strong>Đáp án:</strong> <span class="answer-text">${q.prefix} <span class="answer-highlight">${q.answer}</span></span>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function normalizeText(text) {
+            return text.toLowerCase()
+                       .replace(/\s+/g, ' ')
+                       .replace(/[.,!?;:'"]/g, '')
+                       .trim();
+        }
+
+        function checkAnswers() {
+            let correct = 0;
+            let total = questions.length;
+
+            questions.forEach((q, index) => {
+                const input = document.getElementById(`input-${index}`);
+                const questionDiv = document.getElementById(`question-${index}`);
+                const icon = document.getElementById(`icon-${index}`);
+                const userAnswer = input.value.trim();
+
+                if (!userAnswer) {
+                    questionDiv.className = 'question';
+                    input.className = 'answer-input';
+                    icon.textContent = '';
+                    return;
+                }
+
+                const fullUserAnswer = (q.prefix + ' ' + userAnswer).trim();
+                const normalizedUser = normalizeText(fullUserAnswer);
+                const normalizedCorrect = normalizeText(q.fullAnswer);
+
+                if (normalizedUser === normalizedCorrect) {
+                    questionDiv.className = 'question correct';
+                    input.className = 'answer-input correct-input';
+                    icon.textContent = '✅';
+                    correct++;
+                } else {
+                    questionDiv.className = 'question incorrect';
+                    input.className = 'answer-input incorrect-input';
+                    icon.textContent = '❌';
+                }
+            });
+
+            const scoreBoard = document.getElementById('scoreBoard');
+            scoreBoard.style.display = 'block';
+            document.getElementById('scoreText').textContent = `Kết quả: ${correct}/${total}`;
+            
+            const percentage = Math.round((correct / total) * 100);
+            let message = '';
+            if (percentage === 100) message = '🏆 Xuất sắc! Bạn đã làm đúng tất cả!';
+            else if (percentage >= 80) message = '🌟 Rất tốt! Cố gắng thêm một chút nữa!';
+            else if (percentage >= 60) message = '👍 Khá tốt! Hãy ôn tập thêm nhé!';
+            else if (percentage >= 40) message = '📚 Cần cố gắng nhiều hơn!';
+            else message = '💪 Đừng bỏ cuộc! Hãy thử lại nhé!';
+            
+            document.getElementById('scoreDetail').textContent = `${percentage}% - ${message}`;
+        }
+
+        function revealAnswers() {
+            questions.forEach((q, index) => {
+                const answerDiv = document.getElementById(`answer-${index}`);
+                answerDiv.style.display = 'block';
+                const input = document.getElementById(`input-${index}`);
+                input.value = q.answer;
+                input.className = 'answer-input correct-input';
+                document.getElementById(`question-${index}`).className = 'question correct';
+                document.getElementById(`icon-${index}`).textContent = '✅';
+            });
+
+            const scoreBoard = document.getElementById('scoreBoard');
+            scoreBoard.style.display = 'block';
+            document.getElementById('scoreText').textContent = `Kết quả: ${questions.length}/${questions.length}`;
+            document.getElementById('scoreDetail').textContent = '100% - Đây là đáp án tham khảo!';
+        }
+
+        function resetAll() {
+            questions.forEach((q, index) => {
+                const input = document.getElementById(`input-${index}`);
+                input.value = '';
+                input.className = 'answer-input';
+                document.getElementById(`question-${index}`).className = 'question';
+                document.getElementById(`icon-${index}`).textContent = '';
+                document.getElementById(`answer-${index}`).style.display = 'none';
+            });
+            document.getElementById('scoreBoard').style.display = 'none';
+        }
+
+        // Initialize
+        renderQuestions();
+    </script>
+</body>
+</html>
